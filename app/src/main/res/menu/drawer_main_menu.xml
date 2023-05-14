@@ -8,17 +8,15 @@
     <item android:title="@string/my_all_ads">
         <menu>
             <item
+                android:id = "@+id/id_all_ads"
+                android:title="@string/all_ads"
+                />
+            <item
                 android:id="@+id/id_my_ads"
                 android:title="@string/my_ads" />
             <item
                 android:id="@+id/id_my_favourite_ads"
                 android:title="@string/my_favourite_ads" />
-            <item
-                android:id="@+id/id_my_long_ads"
-                android:title="@string/my_long_ads" />
-            <item
-                android:id="@+id/id_my_days_ads"
-                android:title="@string/my_days_ads" />
         </menu>
     </item>
 

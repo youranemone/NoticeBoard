@@ -3,17 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
 
     <EditText
         android:id="@+id/edTitle"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="16dp"
+        android:background="@drawable/custom_input"
         android:ems="10"
         android:hint="@string/edit_act_title"
         android:inputType="textPersonName"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColorHint="@color/grey"
         app:layout_constraintEnd_toEndOf="@+id/imItem"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/imItem"
         app:layout_constraintTop_toBottomOf="@+id/imItem" />
 
@@ -25,20 +31,24 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:onClick="onClickImage"
+        android:src="@android:drawable/ic_menu_gallery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@android:drawable/ic_menu_gallery"
-        android:src = "@android:drawable/ic_menu_gallery"/>
+        tools:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <EditText
         android:id="@+id/edPrice"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/custom_input"
         android:ems="10"
         android:hint="@string/edit_act_price"
         android:inputType="textPersonName"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColorHint="@color/grey"
         app:layout_constraintEnd_toEndOf="@+id/spType"
         app:layout_constraintStart_toStartOf="@+id/spType"
         app:layout_constraintTop_toBottomOf="@+id/spType" />
@@ -46,11 +56,15 @@
     <EditText
         android:id="@+id/edAddress"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/custom_input"
         android:ems="10"
         android:hint="@string/edit_act_address"
         android:inputType="textPostalAddress"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColorHint="@color/grey"
         app:layout_constraintEnd_toEndOf="@+id/edTitle"
         app:layout_constraintStart_toStartOf="@+id/edTitle"
         app:layout_constraintTop_toBottomOf="@+id/edTitle" />
@@ -59,14 +73,20 @@
         android:id="@+id/edDiscription"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_input"
         android:ems="10"
         android:gravity="top"
         android:hint="@string/edit_act_discription"
         android:inputType="textMultiLine|textPersonName"
+        android:paddingStart="12dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="12dp"
+        android:textColorHint="@color/grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/edAddress"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edAddress"
         app:layout_constraintTop_toBottomOf="@+id/edPrice"
         app:layout_constraintVertical_bias="0.0" />
@@ -74,9 +94,10 @@
     <Spinner
         android:id="@+id/spType"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="8dp"
-        android:background="@android:drawable/spinner_background"
+        android:background="@drawable/custom_input"
+        android:contextClickable="false"
         app:layout_constraintEnd_toEndOf="@+id/edAddress"
         app:layout_constraintStart_toStartOf="@+id/edAddress"
         app:layout_constraintTop_toBottomOf="@+id/edAddress" />
@@ -91,7 +112,7 @@
         android:onClick="onClickSavePost"
         android:src="@drawable/ic_save"
         android:tint="@color/white"
-        app:backgroundTint="@color/main_blue"
+        app:backgroundTint="@color/main_color"
         app:layout_constraintBottom_toBottomOf="@+id/edDiscription"
         app:layout_constraintEnd_toEndOf="@+id/edDiscription"
         app:rippleColor="@color/white" />

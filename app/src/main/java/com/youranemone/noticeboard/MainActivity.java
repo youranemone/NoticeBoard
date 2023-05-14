@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         rcView = findViewById(R.id.rcView);
         rcView.setLayoutManager(new LinearLayoutManager(this));
         List<NewPost> arrayPost = new ArrayList<>();
-
-
         postAdapter = new PostAdapter(arrayPost,this,onItemClickCustom);
         rcView.setAdapter(postAdapter);
         nav_view = findViewById(R.id.nav_view);
@@ -85,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getDataDB();
         dbManager = new DbManager(dataSender, this);
-        dbManager.getDataFromDb("Аренда на длительный срок");
+        dbManager.getAllAdsDataFromDb(mAuth.getUid());
         postAdapter.setDbManager(dbManager);
 
     }
@@ -123,18 +121,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         switch (id)
         {
+            case R.id.id_all_ads:
+                dbManager.getAllAdsDataFromDb(mAuth.getUid());
+                break;
             case R.id.id_my_ads:
                 dbManager.getMyAdsDataFromDb(mAuth.getUid());
                 break;
             case R.id.id_my_favourite_ads:
                 Toast.makeText(this, "Pressed favourite ads", Toast.LENGTH_LONG).show();
                 break;
-            case R.id.id_my_long_ads:
-                dbManager.getDataFromDb("Аренда на длительный срок");
-                break;
-            case R.id.id_my_days_ads:
-                dbManager.getDataFromDb("Посуточная аренда");
-                break;
+//            case R.id.id_my_long_ads:
+//                dbManager.getDataFromDb("Аренда на длительный срок");
+//                break;
+//            case R.id.id_my_days_ads:
+//                dbManager.getDataFromDb("Посуточная аренда");
+//                break;
             case R.id.id_my_chat:
 
                 break;

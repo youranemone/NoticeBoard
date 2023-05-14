@@ -53,6 +53,14 @@ public class DbManager {
         cat_ads_counter++;
     }
 
+    public void getAllAdsDataFromDb(String uid){
+        if(newPostList.size() > 0) newPostList.clear();
+        DatabaseReference dbRef = db.getReference(category_ads[0]);
+        myQuery = dbRef.orderByChild("anuncio/uid");
+        readAllAdsData(uid);
+        cat_ads_counter++;
+    }
+
     public void readDataUpdate(){
         myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -93,6 +101,35 @@ public class DbManager {
 
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void readAllAdsData(String uid){
+        myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    NewPost newPost = ds.child("anuncio").getValue(NewPost.class);
+                    if(!newPost.getUid().equals(uid)){
+                        newPostList.add(newPost);
+                    }
+                }
+                if(cat_ads_counter > 1){
+                    dataSender.onDataReceived(newPostList);
+                    newPostList.clear();
+                    cat_ads_counter = 0;
+                }else{
+                    DatabaseReference dbRef = db.getReference(category_ads[cat_ads_counter]);
+                    myQuery = dbRef.orderByChild("anuncio/uid");
+                    readAllAdsData(uid);
+                    cat_ads_counter++;
+                }
+
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

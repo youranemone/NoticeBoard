@@ -56,7 +56,9 @@ public class EditActivity extends AppCompatActivity {
 
         imItem = findViewById(R.id.imItem);
         spinner = findViewById(R.id.spType);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.edit_act_type, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.edit_act_type,
+                R.layout.custom_spinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);

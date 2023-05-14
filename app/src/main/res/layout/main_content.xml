@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
-        android:background="@color/main_blue"
+        android:background="@color/main_color"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,6 +20,7 @@
         android:id="@+id/rcView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/background_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -35,9 +36,9 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:onClick="onClickEdit"
-        app:backgroundTint="@color/main_blue"
+        app:backgroundTint="@color/main_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@color/white"
+        app:rippleColor="@color/text_color"
         app:srcCompat="@android:drawable/ic_dialog_dialer" />
 </androidx.constraintlayout.widget.ConstraintLayout>

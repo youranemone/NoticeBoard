@@ -3,8 +3,8 @@
     <!--Меню -->
     <string name="my_all_ads">Объявления</string>
     <string name="my_ads">Мои объявления</string>
+    <string name="all_ads">Все объявления</string>
     <string name="my_favourite_ads">Избранные</string>
-    <string name="my_categories_ads">Категории</string>
     <string name="my_long_ads">С длительной арендой</string>
     <string name="my_days_ads">С посуточной арендой</string>
     <string name="my_communication">Общение</string>

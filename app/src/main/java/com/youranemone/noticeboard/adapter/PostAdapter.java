@@ -84,7 +84,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
             }
             Picasso.get().load(post.getImageId()).into(imAds);
             tvTitle.setText(post.getTitle());
-            String priceAdr = "Цена: " + post.getPrice() + " Адрес: " + post.getAddress();
+            String priceAdr;
+            if(post.getCat().equals("Посуточная аренда")){
+                priceAdr = "Цена: " + post.getPrice() + " руб./сутки" + "\n" + "Адрес: " + post.getAddress();
+            }else{
+                priceAdr = "Цена: " + post.getPrice() + " руб./месяц" + "\n" + "Адрес: " + post.getAddress();
+            }
             tvPriceAdr.setText(priceAdr);
             String textDisc = null;
             if(post.getDisc().length() > 50) textDisc = post.getDisc().substring(0,50) + "...";
