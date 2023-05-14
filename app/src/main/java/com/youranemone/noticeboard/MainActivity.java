@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private PostAdapter postAdapter;
     private DataSender dataSender;
     private DbManager dbManager;
+    private DatabaseReference dRef;
     public static String MAUTH = "";
 
     @Override
@@ -86,8 +87,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dbManager = new DbManager(dataSender, this);
         dbManager.getDataFromDb("Аренда на длительный срок");
         postAdapter.setDbManager(dbManager);
-
-
 
     }
 
@@ -177,11 +176,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         EditText edEmail = dialogView.findViewById(R.id.edEmail);
         EditText edPassword = dialogView.findViewById(R.id.edPassword);
+        EditText edUsername = dialogView.findViewById(R.id.edUsername);
+        EditText edTelephone = dialogView.findViewById(R.id.edTelephone);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(index == 0){
-                    signUp(edEmail.getText().toString().trim(),edPassword.getText().toString());
+                    signUp(edEmail.getText().toString().trim(),edPassword.getText().toString(),edUsername.getText().toString(), edTelephone.getText().toString());
                 }else{
                     signIn(edEmail.getText().toString().trim(),edPassword.getText().toString());
                 }
@@ -192,13 +193,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dialog.show();
     }
 
-    private void signUp(String email, String password){
+    private void signUp(String email, String password, String username, String telephone){
         if(!email.equals("") && !password.equals("")) {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         getUserData();
+                        setUserDopParams(username,telephone);
                     } else {
                         Log.d("MyLogMainActivity", "createUserWithEmail:failure", task.getException());
                         Toast.makeText(getApplicationContext(), "Authentication failed",
@@ -239,6 +241,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else{
             userEmail.setText(R.string.sign_in_or_sign_up);
             MAUTH = "";
+        }
+    }
+
+    private void setUserDopParams(String username, String telephone){
+        dRef = FirebaseDatabase.getInstance().getReference("Доп параметры пользователя");
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getUid() != null){
+            UserParams userParams = new UserParams();
+            userParams.setImageId("Доработать потом");
+            userParams.setUsername(username);
+            userParams.setPhone_number(telephone);
+            userParams.setuID(mAuth.getUid());
+
+            dRef.child(mAuth.getUid()).setValue(userParams);
         }
     }
 
