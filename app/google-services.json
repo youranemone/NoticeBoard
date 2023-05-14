@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "651572140865",
+    "project_id": "diplomnoticeboard",
+    "firebase_url" : "https://diplomnoticeboard-default-rtdb.europe-west1.firebasedatabase.app",
+    "storage_bucket": "diplomnoticeboard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651572140865:android:c5797e38558e37db20dfc0",
+        "android_client_info": {
+          "package_name": "com.youranemone.noticeboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651572140865-2q2t61qtddm0sjqdrlvjbbjoeko3dsld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj7XE-8tTNObPoAJfkmRCExqch3d5Hm2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651572140865-2q2t61qtddm0sjqdrlvjbbjoeko3dsld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">NoticeBoard</string>
+    <!--Меню -->
+    <string name="my_all_ads">Объявления</string>
+    <string name="my_ads">Мои объявления</string>
+    <string name="my_favourite_ads">Избранные</string>
+    <string name="my_categories_ads">Категории</string>
+    <string name="my_long_ads">С длительной арендой</string>
+    <string name="my_days_ads">С посуточной арендой</string>
+    <string name="my_communication">Общение</string>
+    <string name="my_chat">Чаты</string>
+    <string name="my_calendar">Календарь встреч</string>
+    <string name="my_account">Аккаунт</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="sign_in">Вход</string>
+    <string name="sign_out">Выход</string>
+    <!--Регистрация/Авторизация -->
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="username_hint">Имя</string>
+    <string name="telephone_hint">Телефон</string>
+    <string name="sign_up_btn">Зарегистрироваться</string>
+    <string name="sign_in_btn">Войти</string>
+    <string name="forget_pass_btn">Забыли пароль?</string>
+    <string name="sign_up_title">Регистрация</string>
+    <string name="sign_in_title">Авторизация</string>
+    <string name="sign_in_or_sign_up">Войдите или зарегистрируйтесь!</string>
+    <!--Создание объявлений(EditActivity) -->
+    <string name="edit_act_title">Название</string>
+    <string name="edit_act_price">Цена</string>
+    <string name="edit_act_address">Адрес</string>
+    <string name="edit_act_discription">Описание</string>
+    <string-array name="edit_act_type">
+        <!--<item>Выберите тип аренды</item>-->
+        <item>Посуточная аренда</item>
+        <item>Аренда на длительный срок</item>
+    </string-array>
+    <string name="toogle_open">Open</string>
+    <string name="toogle_close">Close</string>
+    <!--(EditActivity) -->
+    <string name="delete_title">Удалить объявление?</string>
+    <string name="delete_message">Вы действительно хотите удалить объявление?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+</resources>
