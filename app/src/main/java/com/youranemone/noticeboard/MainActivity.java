@@ -54,12 +54,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DbManager dbManager;
     private DatabaseReference dRef;
     public static String MAUTH = "";
+    private String current_cat = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(current_cat.equals("my_ads")){
+            dbManager.getMyAdsDataFromDb(mAuth.getUid());
+        }else{
+            dbManager.getAllAdsDataFromDb(mAuth.getUid());
+        }
     }
 
     private void init(){
@@ -83,7 +94,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getDataDB();
         dbManager = new DbManager(dataSender, this);
-        dbManager.getAllAdsDataFromDb(mAuth.getUid());
         postAdapter.setDbManager(dbManager);
 
     }
@@ -123,9 +133,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             case R.id.id_all_ads:
                 dbManager.getAllAdsDataFromDb(mAuth.getUid());
+                current_cat = "all_ads";
                 break;
             case R.id.id_my_ads:
                 dbManager.getMyAdsDataFromDb(mAuth.getUid());
+                current_cat = "my_ ads";
                 break;
             case R.id.id_my_favourite_ads:
                 Toast.makeText(this, "Pressed favourite ads", Toast.LENGTH_LONG).show();

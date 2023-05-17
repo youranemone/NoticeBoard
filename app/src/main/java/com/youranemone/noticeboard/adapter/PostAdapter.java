@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.LabeledIntent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.youranemone.noticeboard.DbManager;
+import com.youranemone.noticeboard.EditActivity;
 import com.youranemone.noticeboard.MainActivity;
 import com.youranemone.noticeboard.NewPost;
 import com.youranemone.noticeboard.R;
+import com.youranemone.noticeboard.utils.MyConstants;
 
 import java.util.List;
 
@@ -57,10 +60,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
 
     public class ViewHolderData extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private TextView tvTitle, tvPriceAdr, tvDisc;
+        private TextView tvTitle, tvPriceAdr, tvDisc, tvTotalViews;
         private ImageView imAds;
         private LinearLayout editLayout;
-        private ImageButton deleteButton;
+        private ImageButton deleteButton, editButton;
         private OnItemClickCustom onItemClickCustom;
 
         public ViewHolderData(@NonNull View itemView, OnItemClickCustom onItemClickCustom) {
@@ -68,9 +71,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDisc = itemView.findViewById(R.id.tvDisc);
             tvPriceAdr = itemView.findViewById(R.id.tvPriceAdr);
+            tvTotalViews = itemView.findViewById(R.id.tvTotalViews);
             imAds = itemView.findViewById(R.id.imAds);
             editLayout = itemView.findViewById(R.id.edit_layout);
             deleteButton = itemView.findViewById(R.id.imDelete);
+            editButton = itemView.findViewById(R.id.imEditItem);
             this.onItemClickCustom = onItemClickCustom;
             itemView.setOnClickListener(this);
 
@@ -91,21 +96,42 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
                 priceAdr = "Цена: " + post.getPrice() + " руб./месяц" + "\n" + "Адрес: " + post.getAddress();
             }
             tvPriceAdr.setText(priceAdr);
+            tvTotalViews.setText(post.getTotal_views());
             String textDisc = null;
-            if(post.getDisc().length() > 50) textDisc = post.getDisc().substring(0,50) + "...";
+            if(post.getDisc().length() > 50) textDisc = post.getDisc().substring(0,60) + "...";
             else textDisc = post.getDisc();
             tvDisc.setText(textDisc);
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     deleteDialog(post, getAdapterPosition());
+                }
+            });
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(context, EditActivity.class);
+                    i.putExtra(MyConstants.IMAGE_ID,post.getImageId());
+                    i.putExtra(MyConstants.TITLE, post.getTitle());
+                    i.putExtra(MyConstants.PRICE, post.getPrice());
+                    i.putExtra(MyConstants.TIME,post.getTime());
+                    i.putExtra(MyConstants.ADDRESS,post.getAddress());
+                    i.putExtra(MyConstants.DISC,post.getDisc());
+                    i.putExtra(MyConstants.STATUS,post.getStatus());
+                    i.putExtra(MyConstants.KEY,post.getKey());
+                    i.putExtra(MyConstants.UID,post.getUid());
+                    i.putExtra(MyConstants.DATE,post.getDate());
+                    i.putExtra(MyConstants.CAT,post.getCat());
+                    i.putExtra(MyConstants.EDIT_STATE,true);
+                    i.putExtra(MyConstants.TOTAL_VIEWS, post.getTotal_views());
+                    context.startActivity(i);
                 }
             });
         }
 
         @Override
         public void onClick(View view) {
+            dbManager.updateTotalViews(arrayPost.get(getAdapterPosition()));
             onItemClickCustom.onItemSelected(getAdapterPosition());
         }
     }

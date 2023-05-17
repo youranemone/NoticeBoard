@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:drawable/editbox_background"
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="5dp"
+    android:background="@drawable/custom_recycler_item"
     android:paddingBottom="10dp">
 
     <TextView
@@ -12,10 +15,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/montserrat_bold"
         android:text="TextView"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/tvPriceAdr"
         app:layout_constraintStart_toStartOf="@+id/tvPriceAdr"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,9 +41,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:gravity="center"
+        android:fontFamily="@font/montserrat"
         android:text="TextView"
-        android:textColor="@color/grey"
+        android:textColor="@color/text_color"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -51,9 +54,8 @@
         android:id="@+id/tvDisc"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center_horizontal"
         android:text="TextView"
-        android:textColor="@color/grey"
+        android:textColor="@color/text_color"
         app:layout_constraintBottom_toBottomOf="@+id/imAds"
         app:layout_constraintEnd_toEndOf="@+id/tvPriceAdr"
         app:layout_constraintStart_toStartOf="@+id/tvPriceAdr"
@@ -73,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:background="@android:drawable/screen_background_light_transparent"
+            android:background="@color/white"
             app:srcCompat="@android:drawable/ic_menu_edit" />
 
         <ImageButton
@@ -81,7 +83,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:background="@android:drawable/screen_background_light_transparent"
+            android:background="@color/white"
             app:srcCompat="@android:drawable/ic_menu_delete" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imAds"
+        app:srcCompat="@drawable/ic_eye" />
+
+    <TextView
+        android:id="@+id/tvTotalViews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textColor="@color/grey"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

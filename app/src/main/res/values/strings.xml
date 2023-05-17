@@ -30,6 +30,8 @@
     <string name="edit_act_price">Цена</string>
     <string name="edit_act_address">Адрес</string>
     <string name="edit_act_discription">Описание</string>
+    <string name="edit_act_view_on_map">Показать на карте</string>
+    <string name="edit_act_cat_title">Категория</string>
     <string-array name="edit_act_type">
         <!--<item>Выберите тип аренды</item>-->
         <item>Посуточная аренда</item>
@@ -42,4 +44,7 @@
     <string name="delete_message">Вы действительно хотите удалить объявление?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <!--Просмотр объявлений-->
+    <string name="chat_btn">Написать в чате</string>
+    <string name="call_btn">Позвонить</string>
 </resources>

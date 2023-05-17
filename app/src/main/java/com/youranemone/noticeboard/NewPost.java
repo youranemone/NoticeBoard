@@ -13,6 +13,15 @@ public class NewPost {
     private String date;
 
     private String cat;
+    private String total_views;
+
+    public String getTotal_views() {
+        return total_views;
+    }
+
+    public void setTotal_views(String total_views) {
+        this.total_views = total_views;
+    }
 
     public String getCat() {
         return cat;
