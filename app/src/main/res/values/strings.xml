@@ -45,6 +45,6 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <!--Просмотр объявлений-->
-    <string name="chat_btn">Написать в чате</string>
+    <string name="chat_btn">Написать</string>
     <string name="call_btn">Позвонить</string>
 </resources>

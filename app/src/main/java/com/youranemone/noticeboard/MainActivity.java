@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,10 +23,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -32,9 +38,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.youranemone.noticeboard.adapter.DataSender;
 import com.youranemone.noticeboard.adapter.PostAdapter;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +54,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView nav_view;
     private DrawerLayout drawerLayout;
     private FirebaseAuth mAuth;
+    private StorageReference sRef;
     private TextView userEmail;
+
+    private Uri avatarUri;
+    private ImageView avatar;
     private AlertDialog dialog;
     private Toolbar toolbar;
     private PostAdapter.OnItemClickCustom onItemClickCustom;
@@ -74,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void init(){
-
         setOnItemClickCustom();
         rcView = findViewById(R.id.rcView);
         rcView.setLayoutManager(new LinearLayoutManager(this));
@@ -87,9 +100,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.toogle_open,R.string.toogle_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        sRef = FirebaseStorage.getInstance().getReference("Images");
 
         nav_view.setNavigationItemSelectedListener(this);
         userEmail = nav_view.getHeaderView(0).findViewById(R.id.tvEmail);
+        avatar = nav_view.getHeaderView(0).findViewById(R.id.Avatar);
         mAuth = FirebaseAuth.getInstance();
 
         getDataDB();
@@ -213,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         getUserData();
-                        setUserDopParams(username,telephone);
+                        firstLoadUserImage(username,telephone);
                     } else {
                         Log.d("MyLogMainActivity", "createUserWithEmail:failure", task.getException());
                         Toast.makeText(getApplicationContext(), "Authentication failed",
@@ -260,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setUserDopParams(String username, String telephone){
         dRef = FirebaseDatabase.getInstance().getReference("Доп параметры пользователя");
         mAuth = FirebaseAuth.getInstance();
+
         if(mAuth.getUid() != null){
             UserParams userParams = new UserParams();
             userParams.setImageId("Доработать потом");
@@ -269,6 +285,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             dRef.child(mAuth.getUid()).setValue(userParams);
         }
+    }
+
+    private void firstLoadUserImage(String username, String telephone){
+        Bitmap bitmap = ((BitmapDrawable)avatar.getDrawable()).getBitmap();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
+        byte[] byteArray = out.toByteArray();
+        final StorageReference mref = sRef.child(System.currentTimeMillis() + "_avatar_image");
+        UploadTask up = mref.putBytes(byteArray);
+        Task<Uri> task = up.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                return mref.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                avatarUri = task.getResult();
+                assert avatarUri != null;
+                setUserDopParams(username,telephone);
+                Toast.makeText(MainActivity.this, "Upload done!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
 }
