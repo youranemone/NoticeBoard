@@ -65,9 +65,6 @@ public class EditActivity extends AppCompatActivity {
         edPrice = findViewById(R.id.edPrice);
         edAddress = findViewById(R.id.edAddress);
         edDisc = findViewById(R.id.edDiscription);
-
-
-
         spinner = findViewById(R.id.spType);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.edit_act_type,

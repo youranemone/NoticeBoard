@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">NoticeBoard</string>
     <!--Меню -->
+    <string name="update_avatar">Обновить аватар</string>
     <string name="my_all_ads">Объявления</string>
     <string name="my_ads">Мои объявления</string>
     <string name="all_ads">Все объявления</string>
@@ -39,7 +40,7 @@
     </string-array>
     <string name="toogle_open">Open</string>
     <string name="toogle_close">Close</string>
-    <!--(EditActivity) -->
+    <!--(Main Activity) -->
     <string name="delete_title">Удалить объявление?</string>
     <string name="delete_message">Вы действительно хотите удалить объявление?</string>
     <string name="yes">Да</string>

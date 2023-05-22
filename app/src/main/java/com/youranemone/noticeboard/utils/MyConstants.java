@@ -16,4 +16,8 @@ public class MyConstants {
     public static final String CAT = "cat_" + MainActivity.class.getName();
     public static final String TOTAL_VIEWS = "total_views_" + MainActivity.class.getName();
     public static final String EDIT_STATE = "edit_state_" + MainActivity.class.getName();
+    public static final String USER_EMAIL = "user_email_" + MainActivity.class.getName();
+    public static final String USER_NAME = "user_name_" + MainActivity.class.getName();
+    public static final String USER_TELEPHONE = "user_telephone_" + MainActivity.class.getName();
+    public static final String USER_AVATAR = "user_avatar_" + MainActivity.class.getName();
 }

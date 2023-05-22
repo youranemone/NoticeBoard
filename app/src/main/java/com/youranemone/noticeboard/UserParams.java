@@ -4,14 +4,23 @@ public class UserParams {
     private String imageId;
     private String username;
     private String phone_number;
-    private String uID;
+    private String uid;
+    private String eMail;
+
+    public String geteMail() {
+        return eMail;
+    }
+
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
+    }
 
     public String getuID() {
-        return uID;
+        return uid;
     }
 
     public void setuID(String uID) {
-        this.uID = uID;
+        this.uid = uID;
     }
 
     public String getImageId() {

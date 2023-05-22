@@ -20,6 +20,7 @@
             android:id="@+id/Avatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:onClick="onClickAvatar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,5 +39,17 @@
         app:layout_constraintEnd_toEndOf="@+id/userAvatarCV"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/userAvatarCV"
+        app:layout_constraintTop_toBottomOf="@+id/userAvatarCV" />
+
+    <Button
+        android:id="@+id/btnUpdateAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/update_avatar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvEmail"
         app:layout_constraintTop_toBottomOf="@+id/userAvatarCV" />
 </androidx.constraintlayout.widget.ConstraintLayout>

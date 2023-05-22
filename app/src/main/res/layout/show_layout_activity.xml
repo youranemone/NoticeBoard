@@ -16,7 +16,7 @@
     android:layout_height="wrap_content"
     android:background="@color/background_color"
     app:layout_constraintBottom_toBottomOf="@+id/scrollLayout"
-    tools:context=".ShowLayoutActivityActivity">
+    tools:context=".ShowLayoutActivity">
 
     <LinearLayout
         android:id="@+id/linearLayoutAdress"
@@ -36,18 +36,18 @@
             android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:background="@android:drawable/editbox_dropdown_light_frame"
-            android:drawableStart="@drawable/ic_address"
             android:clickable="true"
+            android:drawableStart="@drawable/ic_address"
             android:drawablePadding="12dp"
+            android:focusable="true"
             android:fontFamily="@font/montserrat_medium"
             android:padding="10dp"
             android:text="Тестовый Адрес"
-            android:textColor="@color/text_color"
+            android:textColor="@color/main_blue"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/imMain"
             app:layout_constraintStart_toStartOf="@+id/imMain"
-            app:layout_constraintTop_toBottomOf="@+id/imMain"
-            android:focusable="true" />
+            app:layout_constraintTop_toBottomOf="@+id/imMain" />
 
     </LinearLayout>
 
@@ -120,7 +120,7 @@
         android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
         android:padding="10dp"
-        android:text="TextView"
+        android:text="Заголовок объявления"
         android:textColor="@color/text_color"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/imMain"
@@ -227,7 +227,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_weight="1"
             android:orientation="vertical">
@@ -238,10 +238,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/montserrat_semibold"
+
                 android:paddingStart="4dp"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                android:text="TextView"
+                android:text="Имя пользователя"
                 android:textColor="@color/text_color"
                 android:textSize="18sp" />
 
@@ -259,7 +260,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat"
                     android:paddingStart="4dp"
-                    android:text="TextView"
+                    android:text="Email"
                     android:textColor="@color/text_color"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -276,8 +277,29 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat"
+
                     android:paddingStart="4dp"
-                    android:text="TextView"
+                    android:text="Телефон"
+                    android:textColor="@color/text_color"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvDateValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat"
+
+                    android:paddingStart="4dp"
+                    android:text="Дата публикации"
                     android:textColor="@color/text_color"
                     android:textSize="12sp" />
             </LinearLayout>

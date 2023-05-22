@@ -15,6 +15,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,17 +32,22 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.youranemone.noticeboard.adapter.DataSender;
 import com.youranemone.noticeboard.adapter.PostAdapter;
 
@@ -56,11 +63,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mAuth;
     private StorageReference sRef;
     private TextView userEmail;
-
-    private Uri avatarUri;
     private ImageView avatar;
     private AlertDialog dialog;
     private Toolbar toolbar;
+    private String imgUrl = "";
+    private Uri avatarUri;
     private PostAdapter.OnItemClickCustom onItemClickCustom;
     private RecyclerView rcView;
     private PostAdapter postAdapter;
@@ -106,6 +113,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userEmail = nav_view.getHeaderView(0).findViewById(R.id.tvEmail);
         avatar = nav_view.getHeaderView(0).findViewById(R.id.Avatar);
         mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getUid() != null) {
+            getFirstAvatar(mAuth.getUid());
+        }
 
         getDataDB();
         dbManager = new DbManager(dataSender, this);
@@ -228,7 +238,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         getUserData();
-                        firstLoadUserImage(username,telephone);
+                        setUserDopParams(email,username,telephone);
+                        getFirstAvatar(mAuth.getUid());
                     } else {
                         Log.d("MyLogMainActivity", "createUserWithEmail:failure", task.getException());
                         Toast.makeText(getApplicationContext(), "Authentication failed",
@@ -272,27 +283,68 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void setUserDopParams(String username, String telephone){
+    private void setUserDopParams(String mail, String username, String telephone){
         dRef = FirebaseDatabase.getInstance().getReference("Доп параметры пользователя");
         mAuth = FirebaseAuth.getInstance();
+        StorageReference imgRef = sRef.child("user-default-ico.jpg");
+        imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String imgUri = uri.toString();
+                if(mAuth.getUid() != null){
+                    UserParams userParams = new UserParams();
+                    userParams.setImageId(imgUri);
+                    userParams.setUsername(username);
+                    userParams.setPhone_number(telephone);
+                    userParams.seteMail(mail);
+                    userParams.setuID(mAuth.getUid());
 
-        if(mAuth.getUid() != null){
-            UserParams userParams = new UserParams();
-            userParams.setImageId("Доработать потом");
-            userParams.setUsername(username);
-            userParams.setPhone_number(telephone);
-            userParams.setuID(mAuth.getUid());
-
-            dRef.child(mAuth.getUid()).setValue(userParams);
-        }
+                    dRef.child(mAuth.getUid()).setValue(userParams);
+                }
+            }
+        });
     }
 
-    private void firstLoadUserImage(String username, String telephone){
+    private void getFirstAvatar(String uid){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Доп параметры пользователя");
+        databaseReference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String userAvatarPath = (String) snapshot.child("imageId").getValue();
+                Picasso.get().load(userAvatarPath).into(avatar);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void onClickAvatar(View view){
+        Button btn = findViewById(R.id.btnUpdateAvatar);
+        btn.setVisibility(View.VISIBLE);
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,11);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadNewAvatar(mAuth.getUid());
+                getFirstAvatar(mAuth.getUid());
+                btn.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void loadNewAvatar(String uid){
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("Images");
+
         Bitmap bitmap = ((BitmapDrawable)avatar.getDrawable()).getBitmap();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
         byte[] byteArray = out.toByteArray();
-        final StorageReference mref = sRef.child(System.currentTimeMillis() + "_avatar_image");
+        final StorageReference mref = storageReference.child(System.currentTimeMillis() + "_avatar_image");
         UploadTask up = mref.putBytes(byteArray);
         Task<Uri> task = up.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
@@ -304,9 +356,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onComplete(@NonNull Task<Uri> task) {
                 avatarUri = task.getResult();
                 assert avatarUri != null;
-                setUserDopParams(username,telephone);
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Доп параметры пользователя");
+                databaseReference.child(uid).child("imageId").setValue(avatarUri);
                 Toast.makeText(MainActivity.this, "Upload done!", Toast.LENGTH_SHORT).show();
-                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -315,5 +367,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
 }

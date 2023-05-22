@@ -1,8 +1,8 @@
 {
   "project_info": {
     "project_number": "651572140865",
+    "firebase_url": "https://diplomnoticeboard-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "diplomnoticeboard",
-    "firebase_url" : "https://diplomnoticeboard-default-rtdb.europe-west1.firebasedatabase.app",
     "storage_bucket": "diplomnoticeboard.appspot.com"
   },
   "client": [

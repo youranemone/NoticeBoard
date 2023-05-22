@@ -18,12 +18,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.youranemone.noticeboard.DbManager;
 import com.youranemone.noticeboard.EditActivity;
 import com.youranemone.noticeboard.MainActivity;
 import com.youranemone.noticeboard.NewPost;
 import com.youranemone.noticeboard.R;
+import com.youranemone.noticeboard.ShowLayoutActivity;
+import com.youranemone.noticeboard.UserParams;
 import com.youranemone.noticeboard.utils.MyConstants;
 
 import java.util.List;
@@ -65,6 +72,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
         private LinearLayout editLayout;
         private ImageButton deleteButton, editButton;
         private OnItemClickCustom onItemClickCustom;
+
+        private UserParams userParams;
 
         public ViewHolderData(@NonNull View itemView, OnItemClickCustom onItemClickCustom) {
             super(itemView);
@@ -131,8 +140,39 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
 
         @Override
         public void onClick(View view) {
-            dbManager.updateTotalViews(arrayPost.get(getAdapterPosition()));
+            NewPost post = arrayPost.get(getAdapterPosition());
+            getUserParams(post.getUid());
+            dbManager.updateTotalViews(post);
+            Intent i = new Intent(context, ShowLayoutActivity.class);
+            i.putExtra(MyConstants.IMAGE_ID,post.getImageId());
+            i.putExtra(MyConstants.TITLE, post.getTitle());
+            i.putExtra(MyConstants.PRICE, post.getPrice());
+            i.putExtra(MyConstants.ADDRESS,post.getAddress());
+            i.putExtra(MyConstants.DISC,post.getDisc());
+            i.putExtra(MyConstants.DATE,post.getDate());
+            i.putExtra(MyConstants.CAT,post.getCat());
+            i.putExtra(MyConstants.USER_EMAIL,userParams.geteMail());
+            i.putExtra(MyConstants.USER_NAME,userParams.getUsername());
+            i.putExtra(MyConstants.USER_TELEPHONE,userParams.getPhone_number());
+            i.putExtra(MyConstants.USER_AVATAR,userParams.getImageId());
+            context.startActivity(i);
             onItemClickCustom.onItemSelected(getAdapterPosition());
+        }
+
+        private void getUserParams(String uid){
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("Доп параметры пользователя");
+
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    userParams = snapshot.child(uid).getValue(UserParams.class);
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
     }
 
