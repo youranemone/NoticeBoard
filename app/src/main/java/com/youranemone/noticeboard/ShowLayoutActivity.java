@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.youranemone.noticeboard.map.MapActivity;
 import com.youranemone.noticeboard.utils.MyConstants;
 
 public class ShowLayoutActivity extends AppCompatActivity {
@@ -52,5 +54,14 @@ public class ShowLayoutActivity extends AppCompatActivity {
             Picasso.get().load(i.getStringExtra(MyConstants.IMAGE_ID)).into(imMain);
             Picasso.get().load(i.getStringExtra(MyConstants.USER_AVATAR)).into(imAvatar);
         }
+        tvAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ShowLayoutActivity.this, MapActivity.class);
+                i.putExtra(MyConstants.ADDRESS,tvAddress.getText().toString());
+                startActivity(i);
+            }
+        });
     }
+
 }
