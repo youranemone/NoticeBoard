@@ -1,11 +1,10 @@
 package com.youranemone.noticeboard.adapter;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.LabeledIntent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,7 +76,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
         private final ImageButton editButton;
         private final OnItemClickCustom onItemClickCustom;
 
-        private UserParams userParams = new UserParams();
+        public UserParams userParams = new UserParams();
 
         public ViewHolderData(@NonNull View itemView, OnItemClickCustom onItemClickCustom) {
             super(itemView);
@@ -146,10 +144,38 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
         @Override
         public void onClick(View view) {
             NewPost post = arrayPost.get(getAdapterPosition());
-            dbManager.getUserParams(userParams, post.getUid());
-            //getUserParams(post.getUid());
             dbManager.updateTotalViews(post);
             Intent i = new Intent(context, ShowLayoutActivity.class);
+            DatabaseReference dRef = FirebaseDatabase.getInstance().getReference().child("Доп параметры пользователя").child(post.getUid());
+
+            dRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    UserParams parameters = new UserParams();
+//                    parameters.setuID(snapshot.child("uID").getValue(String.class));
+//                    parameters.seteMail(snapshot.child("eMail").getValue(String.class));
+//                    parameters.setUsername(snapshot.child("username").getValue(String.class));
+//                    parameters.setPhone_number(snapshot.child("phone_number").getValue(String.class));
+//                    parameters.setImageId(snapshot.child("imageId").getValue(String.class));
+                    i.putExtra(MyConstants.USER_EMAIL,snapshot.child("eMail").getValue(String.class));
+                    i.putExtra(MyConstants.USER_TELEPHONE,snapshot.child("phone_number").getValue(String.class));
+                    i.putExtra(MyConstants.USER_AVATAR,snapshot.child("imageId").getValue(String.class));
+                    i.putExtra(MyConstants.USER_EMAIL,snapshot.child("eMail").getValue(String.class));
+                    Log.d("TAG-MAIL",(String) snapshot.child("eMail").getValue());
+                    Log.d("TAG-IMAGE",(String) snapshot.child("imageId").getValue());
+                    Log.d("TAG-USERNAME",(String) snapshot.child("username").getValue());
+                    Log.d("TAG-PHONE",(String) snapshot.child("phone_number").getValue());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            //getUserParams(post.getUid());
+
+
             i.putExtra(MyConstants.IMAGE_ID,post.getImageId());
             i.putExtra(MyConstants.TITLE, post.getTitle());
             i.putExtra(MyConstants.PRICE, post.getPrice());
@@ -165,21 +191,47 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
             onItemClickCustom.onItemSelected(getAdapterPosition());
         }
 
-//        private void setAllUserParams(String email, S){
-//            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Доп параметры пользователя");
-//
-//            databaseReference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    UserParams u =snapshot.getValue(UserParams.class);
-//                    userParams = u;
-//                }
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                }
-//            });
-//        }
+        public void getUserParams(UserParams params, String uid, Intent i ){
+            DatabaseReference dRef = FirebaseDatabase.getInstance().getReference().child("Доп параметры пользователя").child(uid);
+
+            dRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    UserParams parameters = new UserParams();
+//                    parameters.setuID(snapshot.child("uID").getValue(String.class));
+//                    parameters.seteMail(snapshot.child("eMail").getValue(String.class));
+//                    parameters.setUsername(snapshot.child("username").getValue(String.class));
+//                    parameters.setPhone_number(snapshot.child("phone_number").getValue(String.class));
+//                    parameters.setImageId(snapshot.child("imageId").getValue(String.class));
+                    i.putExtra(MyConstants.USER_EMAIL,snapshot.child("eMail").getValue(String.class));
+                    i.putExtra(MyConstants.USER_TELEPHONE,snapshot.child("phone_number").getValue(String.class));
+                    i.putExtra(MyConstants.USER_AVATAR,snapshot.child("imageId").getValue(String.class));
+                    i.putExtra(MyConstants.USER_EMAIL,snapshot.child("eMail").getValue(String.class));
+
+                    setAllUserParams(params,(String) snapshot.child("eMail").getValue(),(String) snapshot.child("imageId").getValue(),
+                            (String) snapshot.child("phone_number").getValue(),(String) snapshot.child("username").getValue(),
+                            (String) snapshot.child("uID").getValue());
+
+                    Log.d("TAG-MAIL",(String) snapshot.child("eMail").getValue());
+                    Log.d("TAG-IMAGE",(String) snapshot.child("imageId").getValue());
+                    Log.d("TAG-USERNAME",(String) snapshot.child("username").getValue());
+                    Log.d("TAG-PHONE",(String) snapshot.child("phone_number").getValue());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+        public void setAllUserParams(UserParams params, String eMail, String imageId, String phone_number, String username, String uID){
+            params.seteMail(eMail);
+            params.setImageId(imageId);
+            params.setPhone_number(phone_number);
+            params.setUsername(username);
+            params.setuID(uID);
+        }
 
     }
 
