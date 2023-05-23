@@ -5,14 +5,14 @@ public class UserParams {
     private String username;
     private String phone_number;
     private String uid;
-    private String eMail;
+    private String email;
 
     public String geteMail() {
-        return eMail;
+        return email;
     }
 
     public void seteMail(String eMail) {
-        this.eMail = eMail;
+        this.email = eMail;
     }
 
     public String getuID() {

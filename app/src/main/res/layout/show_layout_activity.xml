@@ -1,308 +1,312 @@
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<androidx.core.widget.NestedScrollView-->
-<!--    android:id="@+id/scrollLayout"-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:scrollbars="vertical">-->
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    android:id="@+id/scrollLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintScroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    app:layout_constraintBottom_toBottomOf="@+id/scrollLayout"
-    tools:context=".ShowLayoutActivity">
+    android:orientation="vertical"
+    android:fillViewport="true"
+    android:scrollbars="vertical">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutAdress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/imMain"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imMain"
-        app:layout_constraintTop_toBottomOf="@+id/tvShowTitle">
-
-        <TextView
-            android:id="@+id/tvAddressDisc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:background="@android:drawable/editbox_dropdown_light_frame"
-            android:clickable="true"
-            android:drawableStart="@drawable/ic_address"
-            android:drawablePadding="12dp"
-            android:focusable="true"
-            android:fontFamily="@font/montserrat_medium"
-            android:padding="10dp"
-            android:text="Тестовый Адрес"
-            android:textColor="@color/main_blue"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/imMain"
-            app:layout_constraintStart_toStartOf="@+id/imMain"
-            app:layout_constraintTop_toBottomOf="@+id/imMain" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutPrice"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/imMain"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imMain"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutAdress">
-
-        <TextView
-            android:id="@+id/tvPriceDisc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_weight="2"
-            android:background="@android:drawable/editbox_dropdown_light_frame"
-            android:drawableStart="@drawable/ic_price"
-            android:drawablePadding="12dp"
-            android:fontFamily="@font/montserrat_medium"
-            android:padding="10dp"
-            android:text="Тестовая Цена"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/imMain"
-            app:layout_constraintStart_toStartOf="@+id/imMain"
-            app:layout_constraintTop_toBottomOf="@+id/imMain" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayoutCat"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/imMain"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imMain"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutPrice">
-
-        <TextView
-            android:id="@+id/tvCatDisc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_weight="2"
-            android:background="@android:drawable/editbox_dropdown_light_frame"
-            android:drawableStart="@drawable/ic_category"
-            android:drawablePadding="12dp"
-            android:fontFamily="@font/montserrat_medium"
-            android:padding="10dp"
-            android:text="Тестовая Категория"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/imMain"
-            app:layout_constraintStart_toStartOf="@+id/imMain"
-            app:layout_constraintTop_toBottomOf="@+id/imMain" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvShowTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@android:drawable/editbox_dropdown_light_frame"
-        android:fontFamily="@font/montserrat_bold"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="Заголовок объявления"
-        android:textColor="@color/text_color"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/imMain"
-        app:layout_constraintStart_toStartOf="@+id/imMain"
-        app:layout_constraintTop_toBottomOf="@+id/imMain" />
-
-    <ImageView
-        android:id="@+id/imMain"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@android:drawable/editbox_dropdown_light_frame"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/tvShowDisc"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@android:drawable/editbox_dropdown_light_frame"
-        android:drawableStart="@drawable/ic_discription"
-        android:drawablePadding="12dp"
-        android:fontFamily="@font/montserrat_medium"
-        android:padding="10dp"
-        android:text="Тестовое описание"
-        android:textColor="@color/text_color"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/imMain"
-        app:layout_constraintStart_toStartOf="@+id/imMain"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCat" />
-
-    <LinearLayout
-        android:id="@+id/btnLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imMain"
-        app:layout_constraintStart_toStartOf="@+id/imMain">
-
-        <Button
-            android:id="@+id/chatBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/custom_button"
-            android:fontFamily="@font/montserrat_medium"
-            android:text="@string/chat_btn" />
-
-        <Button
-            android:id="@+id/callBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/custom_call_button"
-            android:fontFamily="@font/montserrat_medium"
-            android:text="@string/call_btn" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/btnLayout"
-        app:layout_constraintEnd_toEndOf="@+id/imMain"
-        app:layout_constraintStart_toStartOf="@+id/imMain">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/userAvatarAds"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_horizontal"
-
-
-            app:cardCornerRadius="100dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/imUserAvatar"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-
-                android:layout_weight="2"
-                tools:srcCompat="@tools:sample/avatars" />
-        </androidx.cardview.widget.CardView>
-
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_color"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollLayout"
+        tools:context=".ShowLayoutActivity">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/linearLayoutAdress"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginTop="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/imMain"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/imMain"
+            app:layout_constraintTop_toBottomOf="@+id/tvShowTitle">
 
             <TextView
-                android:id="@+id/tvUserName"
+                android:id="@+id/tvAddressDisc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/montserrat_semibold"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:background="@android:drawable/editbox_dropdown_light_frame"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_address"
+                android:drawablePadding="12dp"
+                android:focusable="true"
+                android:fontFamily="@font/montserrat_medium"
+                android:padding="10dp"
+                android:text="Тестовый Адрес"
+                android:textColor="@color/main_blue"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/imMain"
+                app:layout_constraintStart_toStartOf="@+id/imMain"
+                app:layout_constraintTop_toBottomOf="@+id/imMain" />
 
-                android:paddingStart="4dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:text="Имя пользователя"
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/imMain"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/imMain"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutAdress">
+
+            <TextView
+                android:id="@+id/tvPriceDisc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_weight="2"
+                android:background="@android:drawable/editbox_dropdown_light_frame"
+                android:drawableStart="@drawable/ic_price"
+                android:drawablePadding="12dp"
+                android:fontFamily="@font/montserrat_medium"
+                android:padding="10dp"
+                android:text="Тестовая Цена"
                 android:textColor="@color/text_color"
-                android:textSize="18sp" />
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/imMain"
+                app:layout_constraintStart_toStartOf="@+id/imMain"
+                app:layout_constraintTop_toBottomOf="@+id/imMain" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutCat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/imMain"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/imMain"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutPrice">
+
+            <TextView
+                android:id="@+id/tvCatDisc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_weight="2"
+                android:background="@android:drawable/editbox_dropdown_light_frame"
+                android:drawableStart="@drawable/ic_category"
+                android:drawablePadding="12dp"
+                android:fontFamily="@font/montserrat_medium"
+                android:padding="10dp"
+                android:text="Тестовая Категория"
+                android:textColor="@color/text_color"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/imMain"
+                app:layout_constraintStart_toStartOf="@+id/imMain"
+                app:layout_constraintTop_toBottomOf="@+id/imMain" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvShowTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@android:drawable/editbox_dropdown_light_frame"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Заголовок объявления"
+            android:textColor="@color/text_color"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/imMain"
+            app:layout_constraintStart_toStartOf="@+id/imMain"
+            app:layout_constraintTop_toBottomOf="@+id/imMain" />
+
+        <ImageView
+            android:id="@+id/imMain"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:drawable/editbox_dropdown_light_frame"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tvShowDisc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@android:drawable/editbox_dropdown_light_frame"
+            android:fontFamily="@font/montserrat_medium"
+            android:padding="10dp"
+            android:text="Тестовое описание"
+            android:justificationMode="inter_word"
+            android:textAlignment="textStart"
+            android:textColor="@color/text_color"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/imMain"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/imMain"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCat" />
+
+        <LinearLayout
+            android:id="@+id/btnLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imMain"
+            app:layout_constraintStart_toStartOf="@+id/imMain">
+
+            <Button
+                android:id="@+id/chatBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_button"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="@string/chat_btn" />
+
+            <Button
+                android:id="@+id/callBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_call_button"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="@string/call_btn" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/btnLayout"
+            app:layout_constraintEnd_toEndOf="@+id/imMain"
+            app:layout_constraintStart_toStartOf="@+id/imMain"
+            app:layout_constraintTop_toBottomOf="@+id/tvShowDisc">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/userAvatarAds"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+
+
+                app:cardCornerRadius="100dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imUserAvatar"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+
+                    android:layout_weight="2"
+                    tools:srcCompat="@tools:sample/avatars" />
+            </androidx.cardview.widget.CardView>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="4dp">
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvEmailValue"
+                    android:id="@+id/tvUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
+                    android:layout_marginTop="-1dp"
+
+                    android:fontFamily="@font/montserrat_semibold"
                     android:paddingStart="4dp"
-                    android:text="Email"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:text="Имя пользователя"
                     android:textColor="@color/text_color"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                    android:textSize="18sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvTelephoneValue"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
 
-                    android:paddingStart="4dp"
-                    android:text="Телефон"
-                    android:textColor="@color/text_color"
-                    android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvEmailValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat"
+                        android:paddingStart="4dp"
+                        android:text="Email"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvDateValue"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat"
+                    android:orientation="horizontal">
 
-                    android:paddingStart="4dp"
-                    android:text="Дата публикации"
-                    android:textColor="@color/text_color"
-                    android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/tvTelephoneValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat"
+
+                        android:paddingStart="4dp"
+                        android:text="Телефон"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvDateValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat"
+
+                        android:paddingStart="4dp"
+                        android:text="Дата публикации"
+                        android:textColor="@color/text_color"
+                        android:textSize="12sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--</androidx.core.widget.NestedScrollView>-->
+</androidx.core.widget.NestedScrollView>
