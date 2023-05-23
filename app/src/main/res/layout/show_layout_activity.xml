@@ -13,7 +13,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintScroll"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/background_color"
     app:layout_constraintBottom_toBottomOf="@+id/scrollLayout"
     tools:context=".ShowLayoutActivity">
@@ -162,14 +162,11 @@
         android:id="@+id/btnLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imMain"
-        app:layout_constraintStart_toStartOf="@+id/imMain"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintStart_toStartOf="@+id/imMain">
 
         <Button
             android:id="@+id/chatBtn"
@@ -197,11 +194,11 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/btnLayout"
         app:layout_constraintEnd_toEndOf="@+id/imMain"
-        app:layout_constraintStart_toStartOf="@+id/imMain"
-        app:layout_constraintTop_toBottomOf="@+id/tvShowDisc">
+        app:layout_constraintStart_toStartOf="@+id/imMain">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/userAvatarAds"

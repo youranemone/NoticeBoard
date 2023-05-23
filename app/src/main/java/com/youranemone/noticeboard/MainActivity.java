@@ -258,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         getUserData();
+                        getFirstAvatar(mAuth.getUid());
                     } else {
                         Log.d("MyLogMainActivity", "signInWithEmail:failure", task.getException());
                         Toast.makeText(getApplicationContext(), "Authentication failed",
@@ -276,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(currentUser != null){
             userEmail.setText(currentUser.getEmail());
             MAUTH = mAuth.getUid();
+            getFirstAvatar(mAuth.getUid());
         }
         else{
             userEmail.setText(R.string.sign_in_or_sign_up);
@@ -320,51 +322,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void onClickAvatar(View view){
-        Button btn = findViewById(R.id.btnUpdateAvatar);
-        btn.setVisibility(View.VISIBLE);
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,11);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadNewAvatar(mAuth.getUid());
-                getFirstAvatar(mAuth.getUid());
-                btn.setVisibility(View.GONE);
-            }
-        });
-    }
 
-    public void loadNewAvatar(String uid){
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("Images");
-
-        Bitmap bitmap = ((BitmapDrawable)avatar.getDrawable()).getBitmap();
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,out);
-        byte[] byteArray = out.toByteArray();
-        final StorageReference mref = storageReference.child(System.currentTimeMillis() + "_avatar_image");
-        UploadTask up = mref.putBytes(byteArray);
-        Task<Uri> task = up.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                return mref.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                avatarUri = task.getResult();
-                assert avatarUri != null;
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Доп параметры пользователя");
-                databaseReference.child(uid).child("imageId").setValue(avatarUri);
-                Toast.makeText(MainActivity.this, "Upload done!", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-    }
 }

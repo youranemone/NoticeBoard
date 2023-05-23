@@ -1,6 +1,7 @@
 package com.youranemone.noticeboard;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,35 @@ public class DbManager {
         fs = FirebaseStorage.getInstance();
     }
 
+    public void getUserParams(UserParams params, String uid){
+        DatabaseReference dRef = db.getReference().child("Доп параметры пользователя").child(uid);
+
+        dRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                setAllUserParams(params,(String) snapshot.child("eMail").getValue(),(String) snapshot.child("imageId").getValue(),
+                        (String) snapshot.child("phone_number").getValue(),(String) snapshot.child("username").getValue(),
+                        (String) snapshot.child("uID").getValue());
+                Log.d("TAG-MAIL",(String) snapshot.child("eMail").getValue());
+                Log.d("TAG-IMAGE",(String) snapshot.child("imageId").getValue());
+                Log.d("TAG-USERNAME",(String) snapshot.child("username").getValue());
+                Log.d("TAG-PHONE",(String) snapshot.child("phone_number").getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void setAllUserParams(UserParams params, String eMail, String imageId, String phone_number, String username, String uID){
+        params.seteMail(eMail);
+        params.setImageId(imageId);
+        params.setPhone_number(phone_number);
+        params.setUsername(username);
+        params.setuID(uID);
+    }
     public void updateTotalViews(final NewPost newPost){
         DatabaseReference dRef = FirebaseDatabase.getInstance().getReference(newPost.getCat());
         int total_views;

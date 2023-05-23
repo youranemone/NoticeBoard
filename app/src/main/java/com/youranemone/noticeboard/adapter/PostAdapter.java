@@ -37,10 +37,11 @@ import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData> {
 
-    private List<NewPost> arrayPost;
-    private Context context;
-    private OnItemClickCustom onItemClickCustom;
+    private final List<NewPost> arrayPost;
+    private final Context context;
+    private final OnItemClickCustom onItemClickCustom;
     private DbManager dbManager;
+
 
     public PostAdapter(List<NewPost> arrayPost, Context context, PostAdapter.OnItemClickCustom onItemClickCustom) {
         this.arrayPost = arrayPost;
@@ -67,13 +68,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
 
     public class ViewHolderData extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private TextView tvTitle, tvPriceAdr, tvDisc, tvTotalViews;
-        private ImageView imAds;
-        private LinearLayout editLayout;
-        private ImageButton deleteButton, editButton;
-        private OnItemClickCustom onItemClickCustom;
+        private final TextView tvTitle;
+        private final TextView tvPriceAdr;
+        private final TextView tvDisc;
+        private final TextView tvTotalViews;
+        private final ImageView imAds;
+        private final LinearLayout editLayout;
+        private final ImageButton deleteButton;
+        private final ImageButton editButton;
+        private final OnItemClickCustom onItemClickCustom;
 
-        private UserParams userParams;
+        private UserParams userParams = new UserParams();
 
         public ViewHolderData(@NonNull View itemView, OnItemClickCustom onItemClickCustom) {
             super(itemView);
@@ -141,7 +146,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
         @Override
         public void onClick(View view) {
             NewPost post = arrayPost.get(getAdapterPosition());
-            getUserParams(post.getUid());
+            dbManager.getUserParams(userParams, post.getUid());
+            //getUserParams(post.getUid());
             dbManager.updateTotalViews(post);
             Intent i = new Intent(context, ShowLayoutActivity.class);
             i.putExtra(MyConstants.IMAGE_ID,post.getImageId());
@@ -159,21 +165,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
             onItemClickCustom.onItemSelected(getAdapterPosition());
         }
 
-        private void getUserParams(String uid){
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference ref = database.getReference("Доп параметры пользователя");
+//        private void setAllUserParams(String email, S){
+//            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Доп параметры пользователя");
+//
+//            databaseReference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    UserParams u =snapshot.getValue(UserParams.class);
+//                    userParams = u;
+//                }
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
+//        }
 
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    userParams = snapshot.child(uid).getValue(UserParams.class);
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
     }
 
     private void deleteDialog(final NewPost newPost, int position){
@@ -198,7 +205,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
     }
 
     public interface OnItemClickCustom{
-        public void onItemSelected(int position);
+        void onItemSelected(int position);
     }
 
     public void updateAdapter(List<NewPost> listData){
