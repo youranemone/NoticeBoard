@@ -13,4 +13,5 @@
     <color name="background_color">#E4E2E0</color>
     <color name="main_color">#FF8200</color>
     <color name="call_btn_color">#43d143</color>
+    <color name="callor_map_adr">#494848</color>
 </resources>

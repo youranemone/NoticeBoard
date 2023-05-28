@@ -58,6 +58,7 @@ public class ShowLayoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(ShowLayoutActivity.this, MapActivity.class);
+                i.putExtra(MyConstants.TITLE,tvTitle.getText().toString());
                 i.putExtra(MyConstants.ADDRESS,tvAddress.getText().toString());
                 startActivity(i);
             }
