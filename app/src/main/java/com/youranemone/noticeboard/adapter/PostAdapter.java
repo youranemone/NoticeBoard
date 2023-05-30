@@ -153,6 +153,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
                 i.putExtra(MyConstants.DISC,post.getDisc());
                 i.putExtra(MyConstants.DATE,post.getDate());
                 i.putExtra(MyConstants.CAT,post.getCat());
+                i.putExtra(MyConstants.UID,userParams.getuID());
                 i.putExtra(MyConstants.USER_EMAIL,userParams.geteMail());
                 i.putExtra(MyConstants.USER_NAME,userParams.getUsername());
                 i.putExtra(MyConstants.USER_TELEPHONE,userParams.getPhone_number());
