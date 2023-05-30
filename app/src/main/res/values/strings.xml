@@ -48,4 +48,6 @@
     <!--Просмотр объявлений-->
     <string name="chat_btn">Написать</string>
     <string name="call_btn">Позвонить</string>
+    <!--Просмотр объявлений-->
+    <string name="chat_select_dialog">Выберите Диалог</string>
 </resources>
