@@ -28,6 +28,7 @@ public class ShowLayoutActivity extends AppCompatActivity {
     private TextView tvTitle, tvAddress, tvPrice, tvCat, tvDisc,
             tvUsername, tvUserMail, tvDateCreation, tvTelephone;
     private ImageView imMain, imAvatar;
+    private String imageLink;
     private Button chatBtn, callBtn;
     private UserParams senderUserParams;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -84,6 +85,7 @@ public class ShowLayoutActivity extends AppCompatActivity {
                 callBtn.setVisibility(View.GONE);
             }
             creatorAvatar = i.getStringExtra(MyConstants.USER_AVATAR);
+            imageLink = i.getStringExtra(MyConstants.IMAGE_ID);
             Picasso.get().load(i.getStringExtra(MyConstants.IMAGE_ID)).into(imMain);
             Picasso.get().load(i.getStringExtra(MyConstants.USER_AVATAR)).into(imAvatar);
         }
@@ -111,6 +113,7 @@ public class ShowLayoutActivity extends AppCompatActivity {
                     i.putExtra(MyConstants.ADDRESS,tvAddress.getText().toString());
                     i.putExtra(MyConstants.CAT,tvCat.getText().toString());
                     i.putExtra(MyConstants.KEY,adsKey);
+                    i.putExtra(MyConstants.IMAGE_ID,imageLink);
                     i.putExtra(MyConstants.SENDER_EMAIL,senderUserParams.geteMail());
                     i.putExtra(MyConstants.SENDER_USERNAME,senderUserParams.getUsername());
                     i.putExtra(MyConstants.SENDER_UID,senderUserParams.getuID());
