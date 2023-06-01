@@ -1,4 +1,4 @@
-package com.youranemone.noticeboard;
+package com.youranemone.noticeboard.model;
 
 public class NewPost {
     private String imageId;
@@ -14,6 +14,25 @@ public class NewPost {
 
     private String cat;
     private String total_views;
+
+    private double latitude;
+    private double longitude;
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public String getTotal_views() {
         return total_views;

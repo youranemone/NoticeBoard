@@ -20,6 +20,8 @@ public class MyConstants {
     public static final String USER_NAME = "user_name_" + MainActivity.class.getName();
     public static final String USER_TELEPHONE = "user_telephone_" + MainActivity.class.getName();
     public static final String USER_AVATAR = "user_avatar_" + MainActivity.class.getName();
+    public static final String ADS_LONGITUDE = "ads_longitude" + MainActivity.class.getName();
+    public static final String ADS_LATITUDE = "ads_latitude" + MainActivity.class.getName();
 
     // Константы для Чата
     public static final String SENDER_EMAIL = "sender_email" + MainActivity.class.getName();

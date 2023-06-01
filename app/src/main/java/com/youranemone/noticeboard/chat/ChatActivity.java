@@ -5,8 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.youranemone.noticeboard.R;
-import com.youranemone.noticeboard.UserParams;
+import com.youranemone.noticeboard.model.UserParams;
 import com.youranemone.noticeboard.databinding.ActivityChatBinding;
 import com.youranemone.noticeboard.utils.MyConstants;
 

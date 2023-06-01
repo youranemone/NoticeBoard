@@ -1,6 +1,6 @@
 package com.youranemone.noticeboard.adapter;
 
-import com.youranemone.noticeboard.NewPost;
+import com.youranemone.noticeboard.model.NewPost;
 
 import java.util.List;
 

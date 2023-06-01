@@ -1,7 +1,6 @@
 package com.youranemone.noticeboard;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.youranemone.noticeboard.adapter.DataSender;
+import com.youranemone.noticeboard.model.NewPost;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.youranemone.noticeboard;
+package com.youranemone.noticeboard.model;
 
 public class UserParams {
     private String imageId;

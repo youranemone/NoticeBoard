@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.youranemone.noticeboard.chat.ChatActivity;
 import com.youranemone.noticeboard.map.MapActivity;
+import com.youranemone.noticeboard.model.UserParams;
 import com.youranemone.noticeboard.utils.MyConstants;
 
 import java.util.concurrent.CompletableFuture;
@@ -32,6 +33,9 @@ public class ShowLayoutActivity extends AppCompatActivity {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private String creatorUID;
     private String creatorAvatar;
+    private double lat;
+    private double lon;
+    private String adsKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,9 @@ public class ShowLayoutActivity extends AppCompatActivity {
             tvDateCreation.setText(i.getStringExtra(MyConstants.DATE));
             tvTelephone.setText(i.getStringExtra(MyConstants.USER_TELEPHONE));
             creatorUID = i.getStringExtra(MyConstants.UID);
+            lat = i.getDoubleExtra(MyConstants.ADS_LATITUDE,0);
+            lon = i.getDoubleExtra(MyConstants.ADS_LONGITUDE,0);
+            adsKey = i.getStringExtra(MyConstants.KEY);
             if(auth.getCurrentUser() == null || auth.getUid() == creatorUID){
                 chatBtn.setVisibility(View.GONE);
                 callBtn.setVisibility(View.GONE);
@@ -80,6 +87,10 @@ public class ShowLayoutActivity extends AppCompatActivity {
                 Intent i = new Intent(ShowLayoutActivity.this, MapActivity.class);
                 i.putExtra(MyConstants.TITLE,tvTitle.getText().toString());
                 i.putExtra(MyConstants.ADDRESS,tvAddress.getText().toString());
+                i.putExtra(MyConstants.KEY,adsKey);
+                i.putExtra(MyConstants.CAT, tvCat.getText().toString());
+                i.putExtra(MyConstants.ADS_LONGITUDE, lon);
+                i.putExtra(MyConstants.ADS_LATITUDE, lat);
                 startActivity(i);
             }
         });

@@ -28,6 +28,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.youranemone.noticeboard.utils.MyConstants;
+import com.youranemone.noticeboard.model.NewPost;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
@@ -188,6 +189,8 @@ public class EditActivity extends AppCompatActivity {
             post.setTotal_views("0");
             post.setKey(key);
             post.setCat(spinner.getSelectedItem().toString());
+            post.setLatitude(0);
+            post.setLongitude(0);
 
             if(key != null) dRef.child(key).child("anuncio").setValue(post);
         }

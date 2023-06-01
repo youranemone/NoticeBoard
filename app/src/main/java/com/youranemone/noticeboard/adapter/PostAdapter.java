@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +24,10 @@ import com.squareup.picasso.Picasso;
 import com.youranemone.noticeboard.DbManager;
 import com.youranemone.noticeboard.EditActivity;
 import com.youranemone.noticeboard.MainActivity;
-import com.youranemone.noticeboard.NewPost;
+import com.youranemone.noticeboard.model.NewPost;
 import com.youranemone.noticeboard.R;
 import com.youranemone.noticeboard.ShowLayoutActivity;
-import com.youranemone.noticeboard.UserParams;
+import com.youranemone.noticeboard.model.UserParams;
 import com.youranemone.noticeboard.utils.MyConstants;
 
 import java.util.List;
@@ -153,11 +152,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
                 i.putExtra(MyConstants.DISC,post.getDisc());
                 i.putExtra(MyConstants.DATE,post.getDate());
                 i.putExtra(MyConstants.CAT,post.getCat());
+                i.putExtra(MyConstants.KEY,post.getKey());
+                i.putExtra(MyConstants.ADS_LATITUDE,post.getLatitude());
+                i.putExtra(MyConstants.ADS_LONGITUDE,post.getLongitude());
                 i.putExtra(MyConstants.UID,userParams.getuID());
                 i.putExtra(MyConstants.USER_EMAIL,userParams.geteMail());
                 i.putExtra(MyConstants.USER_NAME,userParams.getUsername());
                 i.putExtra(MyConstants.USER_TELEPHONE,userParams.getPhone_number());
                 i.putExtra(MyConstants.USER_AVATAR,userParams.getImageId());
+
                 context.startActivity(i);
                 onItemClickCustom.onItemSelected(getAdapterPosition());
             });
