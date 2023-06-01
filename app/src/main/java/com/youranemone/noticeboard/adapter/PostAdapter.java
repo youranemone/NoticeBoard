@@ -66,7 +66,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
 
     public class ViewHolderData extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private TextView tvTitle, tvPriceAdr, tvDisc, tvTotalViews;
+        private TextView tvTitle, tvPrice, tvDisc, tvTotalViews, tvAdr;
         private ImageView imAds;
         private LinearLayout editLayout;
         private ImageButton deleteButton, editButton;
@@ -79,7 +79,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvDisc = itemView.findViewById(R.id.tvDisc);
-            tvPriceAdr = itemView.findViewById(R.id.tvPriceAdr);
+            tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvAdr = itemView.findViewById(R.id.tvAdress);
             tvTotalViews = itemView.findViewById(R.id.tvTotalViews);
             imAds = itemView.findViewById(R.id.imAds);
             editLayout = itemView.findViewById(R.id.edit_layout);
@@ -98,13 +99,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderData
             }
             Picasso.get().load(post.getImageId()).into(imAds);
             tvTitle.setText(post.getTitle());
-            String priceAdr;
+            String price;
             if(post.getCat().equals("Посуточная аренда")){
-                priceAdr = "Цена: " + post.getPrice() + " руб./сутки" + "\n" + "Адрес: " + post.getAddress();
+                price = "Цена: " + post.getPrice() + " руб./сутки";
             }else{
-                priceAdr = "Цена: " + post.getPrice() + " руб./месяц" + "\n" + "Адрес: " + post.getAddress();
+                price = "Цена: " + post.getPrice() + " руб./месяц";
             }
-            tvPriceAdr.setText(priceAdr);
+            tvPrice.setText(price);
+            tvAdr.setText(post.getAddress());
             tvTotalViews.setText(post.getTotal_views());
             String textDisc = null;
             if(post.getDisc().length() > 50) textDisc = post.getDisc().substring(0,60) + "...";

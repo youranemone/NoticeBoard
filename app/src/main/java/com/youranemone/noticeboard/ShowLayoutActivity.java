@@ -63,8 +63,14 @@ public class ShowLayoutActivity extends AppCompatActivity {
             tvTitle.setText(i.getStringExtra(MyConstants.TITLE));
             tvDisc.setText(i.getStringExtra(MyConstants.DISC));
             tvAddress.setText(i.getStringExtra(MyConstants.ADDRESS));
-            tvPrice.setText(i.getStringExtra(MyConstants.PRICE));
             tvCat.setText(i.getStringExtra(MyConstants.CAT));
+            if(tvCat.getText().toString().equals("Посуточная аренда")){
+                String price = i.getStringExtra(MyConstants.PRICE) + " руб./сутки";
+                tvPrice.setText(price);
+            }else{
+                String price = i.getStringExtra(MyConstants.PRICE) + " руб./месяц";
+                tvPrice.setText(price);
+            }
             tvUsername.setText(i.getStringExtra(MyConstants.USER_NAME));
             tvUserMail.setText(i.getStringExtra(MyConstants.USER_EMAIL));
             tvDateCreation.setText(i.getStringExtra(MyConstants.DATE));
@@ -101,6 +107,10 @@ public class ShowLayoutActivity extends AppCompatActivity {
                 getUserParams(auth.getUid()).thenAccept(user ->{
                     senderUserParams = user;
                     Intent i = new Intent(ShowLayoutActivity.this, ChatActivity.class);
+                    i.putExtra(MyConstants.TITLE,tvTitle.getText().toString());
+                    i.putExtra(MyConstants.ADDRESS,tvAddress.getText().toString());
+                    i.putExtra(MyConstants.CAT,tvCat.getText().toString());
+                    i.putExtra(MyConstants.KEY,adsKey);
                     i.putExtra(MyConstants.SENDER_EMAIL,senderUserParams.geteMail());
                     i.putExtra(MyConstants.SENDER_USERNAME,senderUserParams.getUsername());
                     i.putExtra(MyConstants.SENDER_UID,senderUserParams.getuID());

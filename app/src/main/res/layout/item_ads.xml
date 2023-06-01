@@ -19,8 +19,8 @@
         android:text="TextView"
         android:textColor="@color/text_color"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/tvPriceAdr"
-        app:layout_constraintStart_toStartOf="@+id/tvPriceAdr"
+        app:layout_constraintEnd_toEndOf="@+id/tvPrice"
+        app:layout_constraintStart_toStartOf="@+id/tvPrice"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -36,7 +36,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tvPriceAdr"
+        android:id="@+id/tvPrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -45,6 +45,7 @@
         android:text="TextView"
         android:textColor="@color/text_color"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvAdress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imAds"
@@ -53,13 +54,15 @@
     <TextView
         android:id="@+id/tvDisc"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
         android:text="TextView"
+        android:layout_marginTop="@dimen/_1sdp"
         android:textColor="@color/text_color"
         app:layout_constraintBottom_toBottomOf="@+id/imAds"
-        app:layout_constraintEnd_toEndOf="@+id/tvPriceAdr"
-        app:layout_constraintStart_toStartOf="@+id/tvPriceAdr"
-        app:layout_constraintTop_toBottomOf="@+id/tvPriceAdr" />
+        app:layout_constraintEnd_toEndOf="@+id/tvPrice"
+        app:layout_constraintStart_toStartOf="@+id/tvPrice"
+        app:layout_constraintTop_toBottomOf="@+id/tvAdress" />
 
     <LinearLayout
         android:id="@+id/edit_layout"
@@ -108,4 +111,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+    <TextView
+        android:id="@+id/tvAdress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:fontFamily="@font/montserrat"
+        android:text="TextView"
+        android:textColor="@color/text_color"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvDisc"
+        app:layout_constraintEnd_toEndOf="@+id/tvPrice"
+        app:layout_constraintStart_toStartOf="@+id/tvPrice"
+        app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
 </androidx.constraintlayout.widget.ConstraintLayout>
