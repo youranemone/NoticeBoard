@@ -43,10 +43,12 @@ import com.youranemone.noticeboard.adapter.PostAdapter;
 import com.youranemone.noticeboard.chat.ChatListActivity;
 import com.youranemone.noticeboard.model.UserParams;
 import com.youranemone.noticeboard.model.NewPost;
+import com.youranemone.noticeboard.utils.MyConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -76,6 +78,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+        mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                getUserData();
+            }
+        });
     }
 
     @Override
@@ -175,12 +183,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.id_sign_up:
                 signUpDialog(R.string.sign_up_title,R.string.sign_up_btn,0);
                 break;
+            case R.id.id_settings:
+                getUserParams(mAuth.getUid()).thenAccept(userParams -> {
+                    Intent intent = new Intent(MainActivity.this,ProfileActivity.class);
+                    intent.putExtra(MyConstants.USER_AVATAR,userParams.getImageId());
+                    intent.putExtra(MyConstants.USER_NAME,userParams.getUsername());
+                    intent.putExtra(MyConstants.USER_TELEPHONE,userParams.getPhone_number());
+                    intent.putExtra(MyConstants.USER_EMAIL,userParams.geteMail());
+                    startActivity(intent);
+                });
+                break;
+
             case R.id.id_sign_in:
                 signUpDialog(R.string.sign_in_title,R.string.sign_in_btn,1);
                 break;
             case R.id.id_sign_out:
                 signOut();
-                getUserData();
                 break;
         }
         return true;
@@ -233,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (task.isSuccessful()) {
                         getUserData();
                         setUserDopParams(email,username,telephone);
-                        //getFirstAvatar(mAuth.getUid());
+                        getFirstAvatar(mAuth.getUid());
                     } else {
                         Log.d("MyLogMainActivity", "createUserWithEmail:failure", task.getException());
                         Toast.makeText(getApplicationContext(), "Authentication failed",
@@ -252,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         getUserData();
-                        //getFirstAvatar(mAuth.getUid());
+                        getFirstAvatar(mAuth.getUid());
                     } else {
                         Log.d("MyLogMainActivity", "signInWithEmail:failure", task.getException());
                         Toast.makeText(getApplicationContext(), "Authentication failed",
@@ -264,12 +282,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     private void signOut(){
         mAuth.signOut();
-        mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                getUserData();
-            }
-        });
+        avatar.setImageResource(R.drawable.ic_launcher_foreground);
     }
     private void getUserData(){
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -286,6 +299,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             signUpItem.setVisible(false);
             settings.setVisible(true);
             signOutItem.setVisible(true);
+            updateImage();
         }
         else {
             userEmail.setText(R.string.sign_in_or_sign_up);
@@ -302,20 +316,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             signUpItem.setVisible(true);
             settings.setVisible(false);
             signOutItem.setVisible(false);
-        }
-    }
-
-    private void setUserDopParams(String username, String telephone){
-        dRef = FirebaseDatabase.getInstance().getReference("Доп параметры пользователя");
-        mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getUid() != null){
-            UserParams userParams = new UserParams();
-            userParams.setImageId("Доработать потом");
-            userParams.setUsername(username);
-            userParams.setPhone_number(telephone);
-            userParams.setuID(mAuth.getUid());
-
-            dRef.child(mAuth.getUid()).setValue(userParams);
         }
     }
 
@@ -356,4 +356,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    private CompletableFuture<UserParams> getUserParams(String uid){
+        CompletableFuture<UserParams> future = new CompletableFuture<>();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("Доп параметры пользователя/" + uid);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserParams user = snapshot.getValue(UserParams.class);
+                future.complete(user);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                future.completeExceptionally(error.toException());
+            }
+        });
+        return future;
+    }
+
+    private void updateImage (){
+        getUserParams(mAuth.getUid()).thenAccept(userParams -> {
+           Picasso.get().load(userParams.getImageId()).into(avatar);
+        });
+    }
 }

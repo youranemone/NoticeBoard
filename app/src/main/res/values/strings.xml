@@ -11,7 +11,7 @@
     <string name="my_chat">Чаты</string>
     <string name="my_calendar">Календарь встреч</string>
     <string name="my_account">Аккаунт</string>
-    <string name="my_settings">Настройки</string>
+    <string name="my_profile">Профиль</string>
     <string name="sign_up">Регистрация</string>
     <string name="sign_in">Вход</string>
     <string name="sign_out">Выход</string>
@@ -20,6 +20,7 @@
     <string name="password_hint">Password</string>
     <string name="username_hint">Имя</string>
     <string name="telephone_hint">Телефон</string>
+    <string name="password_profile">Пароль</string>
     <string name="sign_up_btn">Зарегистрироваться</string>
     <string name="sign_in_btn">Войти</string>
     <string name="forget_pass_btn">Забыли пароль?</string>

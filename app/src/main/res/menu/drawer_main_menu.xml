@@ -33,7 +33,7 @@
         android:title="@string/my_account">
         <menu>
             <item android:id="@+id/id_settings"
-                android:title="@string/my_settings"/>
+                android:title="@string/my_profile"/>
             <item
                 android:id="@+id/id_sign_up"
                 android:title="@string/sign_up"
