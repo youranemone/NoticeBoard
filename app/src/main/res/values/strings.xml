@@ -5,13 +5,13 @@
     <string name="my_all_ads">Объявления</string>
     <string name="my_ads">Мои объявления</string>
     <string name="all_ads">Все объявления</string>
-    <string name="my_favourite_ads">Избранные</string>
     <string name="my_long_ads">С длительной арендой</string>
     <string name="my_days_ads">С посуточной арендой</string>
     <string name="my_communication">Общение</string>
     <string name="my_chat">Чаты</string>
     <string name="my_calendar">Календарь встреч</string>
     <string name="my_account">Аккаунт</string>
+    <string name="my_settings">Настройки</string>
     <string name="sign_up">Регистрация</string>
     <string name="sign_in">Вход</string>
     <string name="sign_out">Выход</string>

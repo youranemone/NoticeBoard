@@ -5,7 +5,8 @@
     <group android:checkableBehavior="single">
     </group>
 
-    <item android:title="@string/my_all_ads">
+    <item android:id="@+id/adsCat"
+        android:title="@string/my_all_ads">
         <menu>
             <item
                 android:id = "@+id/id_all_ads"
@@ -14,13 +15,11 @@
             <item
                 android:id="@+id/id_my_ads"
                 android:title="@string/my_ads" />
-            <item
-                android:id="@+id/id_my_favourite_ads"
-                android:title="@string/my_favourite_ads" />
         </menu>
     </item>
 
-    <item android:title="@string/my_communication">
+    <item android:id="@+id/chatCat"
+        android:title="@string/my_communication">
         <menu>
             <item
                 android:id="@+id/id_my_chat"
@@ -30,14 +29,19 @@
                 android:title="@string/my_calendar" />
         </menu>
     </item>
-    <item android:title="@string/my_account">
+    <item android:id="@+id/accountCat"
+        android:title="@string/my_account">
         <menu>
+            <item android:id="@+id/id_settings"
+                android:title="@string/my_settings"/>
             <item
                 android:id="@+id/id_sign_up"
-                android:title="@string/sign_up" />
+                android:title="@string/sign_up"
+                android:visible="true" />
             <item
                 android:id="@+id/id_sign_in"
-                android:title="@string/sign_in" />
+                android:title="@string/sign_in"
+                android:visible="true" />
             <item
                 android:id="@+id/id_sign_out"
                 android:title="@string/sign_out" />

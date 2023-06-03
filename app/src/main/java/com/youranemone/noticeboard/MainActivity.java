@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +43,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private NavigationView nav_view;
+    private MenuItem allAds, myAds, chatItem, calendarItem,
+            settings, signUpItem, signInItem, signOutItem;
+    private MenuItem adsCat, chatCat;
+    private Menu menu;
     private DrawerLayout drawerLayout;
     private FirebaseAuth mAuth;
     private TextView userEmail;
@@ -95,7 +100,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getDataDB();
         dbManager = new DbManager(dataSender, this);
         postAdapter.setDbManager(dbManager);
-
+        menu = nav_view.getMenu();
+        allAds = menu.findItem(R.id.id_all_ads);
+        myAds = menu.findItem(R.id.id_my_ads);
+        chatItem = menu.findItem(R.id.id_my_chat);
+        calendarItem = menu.findItem(R.id.id_my_calendar);
+        signUpItem = menu.findItem(R.id.id_sign_up);
+        signInItem = menu.findItem(R.id.id_sign_in);
+        signOutItem = menu.findItem(R.id.id_sign_out);
+        settings = menu.findItem(R.id.id_settings);
+        chatCat = menu.findItem(R.id.chatCat);
+        adsCat = menu.findItem(R.id.adsCat);
     }
 
     private void getDataDB(){
@@ -139,15 +154,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 dbManager.getMyAdsDataFromDb(mAuth.getUid());
                 current_cat = "my_ ads";
                 break;
-            case R.id.id_my_favourite_ads:
-                Toast.makeText(this, "Pressed favourite ads", Toast.LENGTH_LONG).show();
-                break;
-//            case R.id.id_my_long_ads:
-//                dbManager.getDataFromDb("Аренда на длительный срок");
-//                break;
-//            case R.id.id_my_days_ads:
-//                dbManager.getDataFromDb("Посуточная аренда");
-//                break;
             case R.id.id_my_chat:
                 Intent i = new Intent(MainActivity.this, ChatListActivity.class);
                 startActivity(i);
@@ -163,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.id_sign_out:
                 signOut();
+                getUserData();
                 break;
         }
         return true;
@@ -251,10 +258,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(currentUser != null){
             userEmail.setText(currentUser.getEmail());
             MAUTH = mAuth.getUid();
+            adsCat.setVisible(true);
+            allAds.setVisible(true);
+            myAds.setVisible(true);
+            chatCat.setVisible(true);
+            chatItem.setVisible(true);
+            calendarItem.setVisible(true);
+            signInItem.setVisible(false);
+            signUpItem.setVisible(false);
+            settings.setVisible(true);
+            signOutItem.setVisible(true);
         }
-        else{
+        else {
             userEmail.setText(R.string.sign_in_or_sign_up);
             MAUTH = "";
+            adsCat.setVisible(false);
+            allAds.setVisible(false);
+            myAds.setVisible(false);
+            chatCat.setVisible(false);
+            chatItem.setVisible(false);
+            calendarItem.setVisible(false);
+            signInItem.setVisible(true);
+            signUpItem.setVisible(true);
+            settings.setVisible(false);
+            signOutItem.setVisible(false);
         }
     }
 
