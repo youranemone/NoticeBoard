@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,17 +20,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 import com.youranemone.noticeboard.adapter.DataSender;
 import com.youranemone.noticeboard.adapter.PostAdapter;
 import com.youranemone.noticeboard.chat.ChatListActivity;
@@ -47,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             settings, signUpItem, signInItem, signOutItem;
     private MenuItem adsCat, chatCat;
     private Menu menu;
+    private ImageView avatar;
     private DrawerLayout drawerLayout;
     private FirebaseAuth mAuth;
     private TextView userEmail;
@@ -58,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DataSender dataSender;
     private DbManager dbManager;
     private DatabaseReference dRef;
+    private StorageReference sRef;
     public static String MAUTH = "";
     private String current_cat = "";
 
@@ -96,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nav_view.setNavigationItemSelectedListener(this);
         userEmail = nav_view.getHeaderView(0).findViewById(R.id.tvEmail);
         mAuth = FirebaseAuth.getInstance();
+        avatar = nav_view.getHeaderView(0).findViewById(R.id.Avatar);
 
         getDataDB();
         dbManager = new DbManager(dataSender, this);
@@ -221,7 +232,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         getUserData();
-                        setUserDopParams(username,telephone);
+                        setUserDopParams(email,username,telephone);
+                        //getFirstAvatar(mAuth.getUid());
                     } else {
                         Log.d("MyLogMainActivity", "createUserWithEmail:failure", task.getException());
                         Toast.makeText(getApplicationContext(), "Authentication failed",
@@ -240,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         getUserData();
+                        //getFirstAvatar(mAuth.getUid());
                     } else {
                         Log.d("MyLogMainActivity", "signInWithEmail:failure", task.getException());
                         Toast.makeText(getApplicationContext(), "Authentication failed",
@@ -251,7 +264,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     private void signOut(){
         mAuth.signOut();
-        getUserData();
+        mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                getUserData();
+            }
+        });
     }
     private void getUserData(){
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -272,9 +290,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else {
             userEmail.setText(R.string.sign_in_or_sign_up);
             MAUTH = "";
-            adsCat.setVisible(false);
+
+            adsCat.setVisible(true);
             allAds.setVisible(false);
             myAds.setVisible(false);
+
             chatCat.setVisible(false);
             chatItem.setVisible(false);
             calendarItem.setVisible(false);
@@ -297,6 +317,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             dRef.child(mAuth.getUid()).setValue(userParams);
         }
+    }
+
+    private void setUserDopParams(String mail, String username, String telephone){
+        dRef = FirebaseDatabase.getInstance().getReference("Доп параметры пользователя");
+        mAuth = FirebaseAuth.getInstance();
+        StorageReference imgRef = sRef.child("user-default-ico.jpg");
+        imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                String imgUri = uri.toString();
+                if(mAuth.getUid() != null){
+                    UserParams userParams = new UserParams();
+                    userParams.setImageId(imgUri);
+                    userParams.setUsername(username);
+                    userParams.setPhone_number(telephone);
+                    userParams.seteMail(mail);
+                    userParams.setuID(mAuth.getUid());
+
+                    dRef.child(mAuth.getUid()).setValue(userParams);
+                }
+            }
+        });
+    }
+
+    private void getFirstAvatar(String uid){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Доп параметры пользователя");
+        databaseReference.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String userAvatarPath = (String) snapshot.child("imageId").getValue();
+                Picasso.get().load(userAvatarPath).into(avatar);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }
