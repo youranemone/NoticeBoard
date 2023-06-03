@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.youranemone.noticeboard.adapter.DataSender;
 import com.youranemone.noticeboard.adapter.PostAdapter;
+import com.youranemone.noticeboard.chat.ChatListActivity;
 import com.youranemone.noticeboard.model.UserParams;
 import com.youranemone.noticeboard.model.NewPost;
 
@@ -148,7 +149,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                dbManager.getDataFromDb("Посуточная аренда");
 //                break;
             case R.id.id_my_chat:
-
+                Intent i = new Intent(MainActivity.this, ChatListActivity.class);
+                startActivity(i);
                 break;
             case R.id.id_my_calendar:
 

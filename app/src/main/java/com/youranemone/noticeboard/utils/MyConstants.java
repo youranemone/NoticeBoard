@@ -33,5 +33,21 @@ public class MyConstants {
     public static final String SENDER_UID = "sender_uid" + MainActivity.class.getName();
     public static final String RECEIVER_UID = "receiver_uid" + MainActivity.class.getName();
 
+    public static final String KEY_COLLECTION_CHAT = "chat";
+    public static final String KEY_SENDER_UID = "senderUid";
+    public static final String KEY_RECEIVER_UID = "receiverUid";
+    public static final String KEY_MESSAGE = "message";
+    public static final String KEY_TIMESTAMP = "timestamp";
+    public static final String KEY_ADS_CHAT = "keyADS";
+    public static final String KEY_CONVERSATIONS = "conversations";
+    public static final String KEY_SENDER_NAME = "senderName";
+    public static final String KEY_SENDER_IMAGE = "senderImage";
+    public static final String KEY_RECEIVER_NAME = "receiverName";
+    public static final String KEY_RECEIVER_IMAGE = "receiverImage";
+    public static final String KEY_LAST_MESSAGE = "lastMessage";
+    public static final String KEY_CONVERSATION_ADS_TITLE = "adsTitle";
+    public static final String KEY_CONVERSATION_ADS_IMAGE_ID = "adsImageId";
+    public static final String KEY_CONVERSATION_ADS_ADDRESS = "adsAddress";
+
 
 }

@@ -7,6 +7,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 import com.youranemone.noticeboard.databinding.ItemContainerReceivedMessageBinding;
 import com.youranemone.noticeboard.databinding.ItemContainerSentMessageBinding;
 import com.youranemone.noticeboard.model.ChatMessage;
@@ -16,15 +22,13 @@ import java.util.List;
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final List<ChatMessage> chatMessages;
-    private final Bitmap receiverProfileImage;
+    private final String receiverProfileImage;
     private final String senderUID;
-
     public static final int VIEW_TYPE_SENT = 1;
     public static final int VIEW_TYPE_RECEIVED = 2;
 
-
-    public ChatAdapter(List<ChatMessage> chatMessage, Bitmap receiverProfileImage, String senderUID) {
-        this.chatMessages = chatMessage;
+    public ChatAdapter(List<ChatMessage> chatMessages, String receiverProfileImage, String senderUID) {
+        this.chatMessages = chatMessages;
         this.receiverProfileImage = receiverProfileImage;
         this.senderUID = senderUID;
     }
@@ -97,10 +101,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             binding = itemContainerReceivedMessageBinding;
         }
 
-        void setData(ChatMessage chatMessage,Bitmap receiverProvileImage){
+        void setData(ChatMessage chatMessage,String receiverProvileImage){
             binding.textMessage.setText(chatMessage.message);
             binding.textDateTime.setText(chatMessage.dateTime);
-            binding.imageProfile.setImageBitmap(receiverProvileImage);
+            Picasso.get().load(receiverProvileImage).into(binding.imageProfile);
         }
     }
 }
