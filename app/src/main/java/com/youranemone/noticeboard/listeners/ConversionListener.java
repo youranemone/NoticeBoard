@@ -1,4 +1,8 @@
 package com.youranemone.noticeboard.listeners;
 
-public class ConversionListener {
+import com.youranemone.noticeboard.model.ConversionModel;
+import com.youranemone.noticeboard.model.UserParams;
+
+public interface ConversionListener {
+    void onConversionClicked(ConversionModel model);
 }

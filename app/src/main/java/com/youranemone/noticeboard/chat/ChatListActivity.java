@@ -3,9 +3,9 @@ package com.youranemone.noticeboard.chat;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -16,15 +16,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
-import com.youranemone.noticeboard.R;
 import com.youranemone.noticeboard.adapter.RecentConversationsAdapter;
-import com.youranemone.noticeboard.databinding.ActivityChatBinding;
 import com.youranemone.noticeboard.databinding.ActivityChatListBinding;
-import com.youranemone.noticeboard.databinding.ActivityMainBinding;
+import com.youranemone.noticeboard.listeners.ConversionListener;
 import com.youranemone.noticeboard.model.ChatMessage;
+import com.youranemone.noticeboard.model.ConversionModel;
 import com.youranemone.noticeboard.model.UserParams;
 import com.youranemone.noticeboard.utils.MyConstants;
 
@@ -33,14 +30,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class ChatListActivity extends AppCompatActivity {
+public class ChatListActivity extends AppCompatActivity implements ConversionListener {
 
     private ActivityChatListBinding binding;
     private List<ChatMessage> conversations;
-//    private String senderUid;
-//    private String receiverUid;
-//    List<UserParams> receivedUsersList = new ArrayList<>();
-//    private UserParams senderUserParams;
+    private UserParams senderUserParams;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private RecentConversationsAdapter conversationsAdapter;
     private FirebaseFirestore firestore;
@@ -51,13 +45,14 @@ public class ChatListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityChatListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setListeners();
         init();
         listenConversations();
     }
 
     private void init(){
         conversations = new ArrayList<>();
-        conversationsAdapter = new RecentConversationsAdapter(conversations);
+        conversationsAdapter = new RecentConversationsAdapter(conversations, this);
         binding.dialogsRecyclerView.setAdapter(conversationsAdapter);
         firestore = FirebaseFirestore.getInstance();
 
@@ -88,10 +83,16 @@ public class ChatListActivity extends AppCompatActivity {
                         chatMessage.conversionImage = documentChange.getDocument().getString(MyConstants.KEY_RECEIVER_IMAGE);
                         chatMessage.conversionName = documentChange.getDocument().getString(MyConstants.KEY_RECEIVER_NAME);
                         chatMessage.conversionId = documentChange.getDocument().getString(MyConstants.KEY_RECEIVER_UID);
+                        chatMessage.adsTitle = documentChange.getDocument().getString(MyConstants.KEY_CONVERSATION_ADS_TITLE);
+                        chatMessage.adsAdress = documentChange.getDocument().getString(MyConstants.KEY_CONVERSATION_ADS_ADDRESS);
+                        chatMessage.adsImage = documentChange.getDocument().getString(MyConstants.KEY_CONVERSATION_ADS_IMAGE_ID);
                     }else{
                         chatMessage.conversionImage = documentChange.getDocument().getString(MyConstants.KEY_SENDER_IMAGE);
                         chatMessage.conversionName = documentChange.getDocument().getString(MyConstants.KEY_SENDER_NAME);
                         chatMessage.conversionId = documentChange.getDocument().getString(MyConstants.KEY_SENDER_UID);
+                        chatMessage.adsTitle = documentChange.getDocument().getString(MyConstants.KEY_CONVERSATION_ADS_TITLE);
+                        chatMessage.adsAdress = documentChange.getDocument().getString(MyConstants.KEY_CONVERSATION_ADS_ADDRESS);
+                        chatMessage.adsImage = documentChange.getDocument().getString(MyConstants.KEY_CONVERSATION_ADS_IMAGE_ID);
                     }
                     chatMessage.message = documentChange.getDocument().getString(MyConstants.KEY_LAST_MESSAGE);
                     chatMessage.dateObject = documentChange.getDocument().getDate(MyConstants.KEY_TIMESTAMP);
@@ -116,64 +117,29 @@ public class ChatListActivity extends AppCompatActivity {
         }
     };
 
-//    private void getDataFormDb(){
-//        UserParams receiverUserParams;
-//        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-//        firebaseFirestore.collection(MyConstants.KEY_COLLECTION_CHAT)
-//                .get()
-//                .addOnSuccessListener(queryDocumentSnapshots -> {
-//                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-//                        if(receiverUid == null){
-//                            if(document.getString(MyConstants.KEY_SENDER_UID).equals(auth.getUid())){
-//                                senderUid = auth.getUid();
-//                                receiverUid = document.getString(MyConstants.KEY_RECEIVER_UID);
-//                                getUserParams(receiverUid).thenAccept(receiverUser ->{
-//                                   receivedUsersList.add(receiverUser);
-//                                });
-//                                if(senderUserParams == null){
-//                                    getUserParams(senderUid).thenAccept(senderUser ->{
-//                                        senderUserParams = senderUser;
-//                                    });
-//                                }
-//                            }if(document.getString(MyConstants.KEY_RECEIVER_UID).equals(auth.getUid())){
-//                                senderUid = auth.getUid();
-//                                receiverUid = document.getString(MyConstants.KEY_SENDER_UID);
-//                                getUserParams(receiverUid).thenAccept(receiverUser ->{
-//                                    receivedUsersList.add(receiverUser);
-//                                });
-//                                if(senderUserParams == null){
-//                                    getUserParams(senderUid).thenAccept(senderUser ->{
-//                                        senderUserParams = senderUser;
-//                                    });
-//                                    receiverUid = document.getString(MyConstants.KEY_RECEIVER_UID);
-//                                    getUserParams(receiverUid).thenAccept(receiverUser ->{
-//                                        receivedUsersList.add(receiverUser);
-//                                    });
-//                                }
-//                            }else{
-//                                continue;
-//                            }
-//                        }else{
-//                            if(document.getString(MyConstants.KEY_SENDER_UID).equals(auth.getUid()) &&
-//                            document.get(MyConstants.KEY_RECEIVER_UID) != receiverUid){
-//                                receiverUid = document.getString(MyConstants.KEY_RECEIVER_UID);
-//                                getUserParams(receiverUid).thenAccept(receiverUser ->{
-//                                    receivedUsersList.add(receiverUser);
-//                                });
-//                            }if(document.getString(MyConstants.KEY_RECEIVER_UID).equals(auth.getUid()) &&
-//                                    document.get(MyConstants.KEY_SENDER_UID) != receiverUid){
-//                                receiverUid = document.getString(MyConstants.KEY_RECEIVER_UID);
-//                                getUserParams(receiverUid).thenAccept(receiverUser ->{
-//                                    receivedUsersList.add(receiverUser);
-//                                });
-//                            }
-//                        }
-//                        // Обработка каждого документа здесь
-//                        // Вы можете получить данные документа с помощью метода document.getData()
-//                        // Например, String fieldValue = document.getString("field_name");
-//                    }
-//                });
-//    }
+    @Override
+    public void onConversionClicked(ConversionModel model) {
+        Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
+        getUserParams(auth.getUid()).thenAccept(senderUser ->{
+            senderUserParams = senderUser;
+            intent.putExtra(MyConstants.SENDER_USERNAME,senderUserParams.getUsername());
+            intent.putExtra(MyConstants.SENDER_UID,senderUserParams.getuID());
+            intent.putExtra(MyConstants.SENDER_IMAGE_ID,senderUserParams.getImageId());
+            intent.putExtra(MyConstants.TITLE,model.getAdsTitle());
+            intent.putExtra(MyConstants.ADDRESS,model.getAdsAdress());
+            intent.putExtra(MyConstants.IMAGE_ID,model.getAdsImageId());
+            intent.putExtra(MyConstants.RECEIVER_USERNAME,model.getName());
+            intent.putExtra(MyConstants.RECEIVER_UID,model.getId());
+            intent.putExtra(MyConstants.RECEIVER_IMAGE_ID,model.getImage());
+            startActivity(intent);
+        });
+    }
+
+    private void setListeners(){
+        binding.imageBack.setOnClickListener(v -> onBackPressed());
+    }
+
+
 
     private CompletableFuture<UserParams> getUserParams(String uid){
         CompletableFuture<UserParams> future = new CompletableFuture<>();

@@ -13,6 +13,7 @@ import android.util.Base64;
 import android.view.View;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,6 +31,7 @@ import com.youranemone.noticeboard.utils.MyConstants;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +41,7 @@ import java.util.Locale;
 public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private UserParams receiverUser = new UserParams(),senderUser = new UserParams();
     private List<ChatMessage> chatMessages;
     private ChatAdapter chatAdapter;
@@ -66,7 +69,7 @@ public class ChatActivity extends AppCompatActivity {
         chatAdapter = new ChatAdapter(
                 chatMessages,
                 receiverUser.getImageId(),
-                senderUser.getuID()
+                auth.getUid()
         );
         binding.chatRecyclerView.setAdapter(chatAdapter);
         database = FirebaseFirestore.getInstance();
@@ -77,7 +80,7 @@ public class ChatActivity extends AppCompatActivity {
         message.put(MyConstants.KEY_SENDER_UID,senderUser.getuID());
         message.put(MyConstants.KEY_RECEIVER_UID,receiverUser.getuID());
         message.put(MyConstants.KEY_MESSAGE,binding.inputMessage.getText().toString());
-        message.put(MyConstants.KEY_ADS_CHAT,keyAds);
+        //message.put(MyConstants.KEY_ADS_CHAT,keyAds);
         message.put(MyConstants.KEY_TIMESTAMP,new Date());
         database.collection(MyConstants.KEY_COLLECTION_CHAT).add(message);
         if(conversationId != null){
@@ -107,7 +110,8 @@ public class ChatActivity extends AppCompatActivity {
                 .addSnapshotListener(eventListener);
         database.collection(MyConstants.KEY_COLLECTION_CHAT)
                 .whereEqualTo(MyConstants.KEY_SENDER_UID,receiverUser.getuID())
-                .whereEqualTo(MyConstants.KEY_RECEIVER_UID,senderUser.getuID());
+                .whereEqualTo(MyConstants.KEY_RECEIVER_UID,senderUser.getuID())
+                .addSnapshotListener(eventListener);
     }
 
     private final EventListener<QuerySnapshot> eventListener = (value, error) ->{
@@ -126,7 +130,7 @@ public class ChatActivity extends AppCompatActivity {
                     chatMessages.add(chatMessage);
                 }
             }
-            Collections.sort(chatMessages, (obj1, obj2) -> obj1.dateObject.compareTo(obj2.dateObject));
+            Collections.sort(chatMessages, Comparator.comparing(obj -> obj.dateObject));
             if(count == 0){
                 chatAdapter.notifyDataSetChanged();
             }else{
@@ -144,20 +148,16 @@ public class ChatActivity extends AppCompatActivity {
     private void loadUsersDetails(){
         if(getIntent() != null){
             Intent i = getIntent();
-            keyAds = i.getStringExtra(MyConstants.KEY);
             binding.tvAdsTitle.setText(i.getStringExtra(MyConstants.TITLE));
             binding.tvAdsAdr.setText(i.getStringExtra(MyConstants.ADDRESS));
             adsImage = i.getStringExtra(MyConstants.IMAGE_ID);
             Picasso.get().load(adsImage).into(binding.adsImage);
             senderUser.setuID(i.getStringExtra(MyConstants.SENDER_UID));
             senderUser.setUsername(i.getStringExtra(MyConstants.SENDER_USERNAME));
-            senderUser.setPhone_number(null);
-            senderUser.seteMail(i.getStringExtra(MyConstants.SENDER_EMAIL));
+
             senderUser.setImageId(i.getStringExtra(MyConstants.SENDER_IMAGE_ID));
             receiverUser.setuID(i.getStringExtra(MyConstants.RECEIVER_UID));
             receiverUser.setUsername(i.getStringExtra(MyConstants.RECEIVER_USERNAME));
-            receiverUser.setPhone_number(null);
-            receiverUser.seteMail(i.getStringExtra(MyConstants.RECEIVER_EMAIL));
             receiverUser.setImageId(i.getStringExtra(MyConstants.RECEIVER_IMAGE_ID));
             binding.textName.setText(receiverUser.getUsername());
         }
@@ -166,6 +166,7 @@ public class ChatActivity extends AppCompatActivity {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
         binding.layoutSend.setOnClickListener(v -> sendMessage());
     }
+
 
     private String getReadableDateTime (Date date){
         return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);

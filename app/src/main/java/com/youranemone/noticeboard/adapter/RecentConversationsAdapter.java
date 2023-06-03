@@ -8,16 +8,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.youranemone.noticeboard.databinding.ItemContainerChatUserBinding;
+import com.youranemone.noticeboard.listeners.ConversionListener;
 import com.youranemone.noticeboard.model.ChatMessage;
+import com.youranemone.noticeboard.model.ConversionModel;
+import com.youranemone.noticeboard.model.UserParams;
 
 import java.util.List;
 
 public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConversationsAdapter.ConversionViewHolder> {
 
     private final List<ChatMessage> chatMessages;
+    private final ConversionListener conversionListener;
 
-    public RecentConversationsAdapter(List<ChatMessage> chatMessages) {
+    public RecentConversationsAdapter(List<ChatMessage> chatMessages, ConversionListener conversionListener) {
         this.chatMessages = chatMessages;
+        this.conversionListener = conversionListener;
     }
 
     @NonNull
@@ -54,6 +59,16 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
             Picasso.get().load(chatMessage.conversionImage).into(binding.imageProfile);
             binding.textName.setText(chatMessage.conversionName);
             binding.textRecentMessage.setText(chatMessage.message);
+            binding.getRoot().setOnClickListener(v -> {
+                ConversionModel model = new ConversionModel();
+                model.setId(chatMessage.conversionId);
+                model.setImage(chatMessage.conversionImage);
+                model.setName(chatMessage.conversionName);
+                model.setAdsTitle(chatMessage.adsTitle);
+                model.setAdsAdress(chatMessage.adsAdress);
+                model.setAdsImageId(chatMessage.adsImage);
+                conversionListener.onConversionClicked(model);
+            });
         }
     }
 }
