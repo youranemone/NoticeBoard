@@ -132,15 +132,15 @@
 
         </LinearLayout>
     </FrameLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/saveBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="@dimen/_18sdp"
-        android:layout_marginEnd="@dimen/_18sdp"
-        android:clickable="true"
-        android:src="@drawable/ic_save"
-        app:backgroundTint="@color/text_color" />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/saveBtn"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:layout_marginBottom="@dimen/_18sdp"-->
+<!--        android:layout_marginEnd="@dimen/_18sdp"-->
+<!--        android:clickable="true"-->
+<!--        android:src="@drawable/ic_save"-->
+<!--        app:backgroundTint="@color/text_color" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

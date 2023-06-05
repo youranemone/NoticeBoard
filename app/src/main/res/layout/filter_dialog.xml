@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tvFilterTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/filters"
+        android:textColor="@color/text_color"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvFilterCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filters_cd_city"
+        android:layout_marginStart="@dimen/_6sdp"
+        android:textColor="@color/text_color"
+        android:layout_marginTop="@dimen/_4sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFilterTitle" />
+
+    <EditText
+        android:id="@+id/edInputCity"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:ems="10"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:layout_marginStart="@dimen/_6sdp"
+        android:layout_marginEnd="@dimen/_6sdp"
+        android:fontFamily="@font/montserrat"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:hint="@string/filters_input_city"
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/grey"
+        android:background="@drawable/custom_input"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFilterCity" />
+
+    <TextView
+        android:id="@+id/tvFilterPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filters_cd_price"
+        android:layout_marginStart="@dimen/_6sdp"
+        android:textColor="@color/text_color"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edInputCity" />
+
+    <EditText
+        android:id="@+id/edFilterFrom"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_6sdp"
+        android:hint="@string/filters_input_from"
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/grey"
+        android:background="@drawable/custom_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFilterPrice" />
+    <EditText
+        android:id="@+id/edFilterTo"
+        android:layout_width="110dp"
+        android:layout_height="50dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:hint="@string/filters_input_to"
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/grey"
+        android:background="@drawable/custom_input"
+        app:layout_constraintStart_toEndOf="@+id/edFilterFrom"
+        app:layout_constraintTop_toBottomOf="@+id/tvFilterPrice" />
+
+    <TextView
+        android:id="@+id/tvFilterCat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filters_cd_cat"
+        android:layout_marginStart="@dimen/_6sdp"
+        android:textColor="@color/text_color"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edFilterFrom" />
+
+    <Spinner
+        android:id="@+id/spinnerCat"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/filter_spinner"
+        app:layout_constraintStart_toStartOf="@+id/edFilterFrom"
+        app:layout_constraintTop_toBottomOf="@+id/tvFilterCat"
+        app:layout_constraintEnd_toEndOf="@id/edInputCity"/>
+
+    <Button
+        android:id="@+id/btnSaveFilter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/filters_btn_save"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/custom_button"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerCat"
+        app:layout_constraintStart_toStartOf="@+id/spinnerCat"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCat" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

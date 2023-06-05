@@ -18,9 +18,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             settings, signUpItem, signInItem, signOutItem;
     private MenuItem adsCat, chatCat;
     private Menu menu;
-    private ImageView avatar;
+    private ImageView avatar, filter;
     private DrawerLayout drawerLayout;
     private FirebaseAuth mAuth;
     private TextView userEmail;
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getUserData();
             }
         });
+        setListeners();
     }
 
     @Override
@@ -91,7 +95,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
         if(current_cat.equals("my_ads")){
             dbManager.getMyAdsDataFromDb(mAuth.getUid());
-        }else{
+        }
+        else{
             dbManager.getAllAdsDataFromDb(mAuth.getUid());
         }
     }
@@ -123,13 +128,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         allAds = menu.findItem(R.id.id_all_ads);
         myAds = menu.findItem(R.id.id_my_ads);
         chatItem = menu.findItem(R.id.id_my_chat);
-        calendarItem = menu.findItem(R.id.id_my_calendar);
+        //calendarItem = menu.findItem(R.id.id_my_calendar);
         signUpItem = menu.findItem(R.id.id_sign_up);
         signInItem = menu.findItem(R.id.id_sign_in);
         signOutItem = menu.findItem(R.id.id_sign_out);
         settings = menu.findItem(R.id.id_settings);
         chatCat = menu.findItem(R.id.chatCat);
         adsCat = menu.findItem(R.id.adsCat);
+        filter = findViewById(R.id.imgFilter);
+    }
+
+    private void setListeners(){
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filterDialog();
+            }
+        });
     }
 
     private void getDataDB(){
@@ -171,15 +186,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.id_my_ads:
                 dbManager.getMyAdsDataFromDb(mAuth.getUid());
-                current_cat = "my_ ads";
+                current_cat = "my_ads";
                 break;
             case R.id.id_my_chat:
                 Intent i = new Intent(MainActivity.this, ChatListActivity.class);
                 startActivity(i);
                 break;
-            case R.id.id_my_calendar:
-
-                break;
+//            case R.id.id_my_calendar:
+//
+//                break;
             case R.id.id_sign_up:
                 signUpDialog(R.string.sign_up_title,R.string.sign_up_btn,0);
                 break;
@@ -202,6 +217,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
         return true;
+    }
+
+    private void filterDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.filter_dialog, null);
+        builder.setView(dialogView);
+        EditText edCity = dialogView.findViewById(R.id.edInputCity);
+        EditText edFrom = dialogView.findViewById(R.id.edFilterFrom);
+        EditText edTo = dialogView.findViewById(R.id.edFilterTo);
+        Spinner catSpiner = dialogView.findViewById(R.id.spinnerCat);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.edit_act_type,
+                R.layout.custom_spinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        catSpiner.setAdapter(adapter);
+        Button createFiler = dialogView.findViewById(R.id.btnSaveFilter);
+
+        createFiler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = catSpiner.getSelectedItemPosition();
+                dbManager.filterAds(mAuth.getUid(),edCity.getText().toString(),
+                        edFrom.getText().toString(),edTo.getText().toString(),
+                        position);
+                dialog.dismiss();
+            }
+        });
+        dialog = builder.create();
+        dialog.show();
     }
 
     private void signUpDialog(int title, int btnTitle, int index){
@@ -294,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             myAds.setVisible(true);
             chatCat.setVisible(true);
             chatItem.setVisible(true);
-            calendarItem.setVisible(true);
+           // calendarItem.setVisible(true);
             signInItem.setVisible(false);
             signUpItem.setVisible(false);
             settings.setVisible(true);
@@ -311,7 +356,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             chatCat.setVisible(false);
             chatItem.setVisible(false);
-            calendarItem.setVisible(false);
+           // calendarItem.setVisible(false);
             signInItem.setVisible(true);
             signUpItem.setVisible(true);
             settings.setVisible(false);

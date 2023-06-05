@@ -19,6 +19,7 @@ import com.youranemone.noticeboard.adapter.DataSender;
 import com.youranemone.noticeboard.model.NewPost;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class DbManager {
@@ -39,48 +40,121 @@ public class DbManager {
         fs = FirebaseStorage.getInstance();
     }
 
-    public void updateTotalViews(final NewPost newPost){
+    public void updateTotalViews(final NewPost newPost) {
         DatabaseReference dRef = FirebaseDatabase.getInstance().getReference(newPost.getCat());
         int total_views;
-        try{
+        try {
             total_views = Integer.parseInt(newPost.getTotal_views());
 
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             total_views = 0;
         }
         total_views++;
         dRef.child(newPost.getKey()).child("anuncio/total_views").setValue(String.valueOf(total_views));
     }
 
-    public void getDataFromDb(String path){
+    public void getDataFromDb(String path) {
         //if(newPostList.size() > 0) newPostList.clear();
         DatabaseReference dbRef = db.getReference(path);
         myQuery = dbRef.orderByChild("anuncio/time");
         readDataUpdate();
     }
 
-    public void getMyAdsDataFromDb(String uid){
-        if(newPostList.size() > 0) newPostList.clear();
+    public void getMyAdsDataFromDb(String uid) {
+        if (newPostList.size() > 0) newPostList.clear();
         DatabaseReference dbRef = db.getReference(category_ads[0]);
         myQuery = dbRef.orderByChild("anuncio/uid").equalTo(uid);
         readMyAdsData(uid);
         cat_ads_counter++;
     }
 
-    public void getAllAdsDataFromDb(String uid){
-        if(newPostList.size() > 0) newPostList.clear();
+    public void getAllAdsDataFromDb(String uid) {
+        if (newPostList.size() > 0) newPostList.clear();
         DatabaseReference dbRef = db.getReference(category_ads[0]);
         myQuery = dbRef.orderByChild("anuncio/uid");
         readAllAdsData(uid);
         cat_ads_counter++;
     }
 
-    public void readDataUpdate(){
+    public void getAllAdsData(String uid, final OnDataReceivedListener listener) {
+        if (newPostList.size() > 0) newPostList.clear();
+        DatabaseReference dbRef = db.getReference(category_ads[0]);
+        myQuery = dbRef.orderByChild("anuncio/uid");
+        readAllData(uid,listener);
+        cat_ads_counter++;
+    }
+    public void readAllData(String uid, final OnDataReceivedListener listener) {
         myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(newPostList.size() > 0) newPostList.clear();
-                for(DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    NewPost newPost = ds.child("anuncio").getValue(NewPost.class);
+                    if (!newPost.getUid().equals(uid)) {
+                        newPostList.add(newPost);
+                    }
+                }
+                if (cat_ads_counter > 1) {
+                    listener.onDataReceived(newPostList);
+                    cat_ads_counter = 0;
+                } else {
+                    DatabaseReference dbRef = db.getReference(category_ads[cat_ads_counter]);
+                    myQuery = dbRef.orderByChild("anuncio/uid");
+                    readAllData(uid, listener);
+                    cat_ads_counter++;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void filterAds(String uid, String city, String from, String to, int spinnerPosition) {
+        getAllAdsData(uid, new OnDataReceivedListener() {
+            @Override
+            public void onDataReceived(List<NewPost> newPosts) {
+                List<NewPost> filteredPosts = new ArrayList<>();
+
+                for (NewPost item : newPosts) {
+                    if (!city.equals("") && !item.getAddress().toLowerCase().contains(city.toLowerCase().trim())) {
+                        continue;
+                    }
+                    if (spinnerPosition != -1 && !item.getCat().equals(category_ads[spinnerPosition])) {
+                        continue;
+                    }
+                    if (!to.equals("")) {
+                        if (!from.equals("")) {
+                            if (Integer.parseInt(item.getPrice()) <= Integer.parseInt(from) ||
+                                    Integer.parseInt(item.getPrice()) >= Integer.parseInt(to)) {
+                                continue;
+                            }
+                        } else {
+                            if (Integer.parseInt(item.getPrice()) >= Integer.parseInt(to)) {
+                                continue;
+                            }
+                        }
+                    }
+                    filteredPosts.add(item);
+                }
+
+                dataSender.onDataReceived(filteredPosts);
+            }
+        });
+    }
+
+    public interface OnDataReceivedListener {
+        void onDataReceived(List<NewPost> newPosts);
+    }
+
+
+    public void readDataUpdate() {
+        myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (newPostList.size() > 0) newPostList.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     NewPost newPost = ds.child("anuncio").getValue(NewPost.class);
                     newPostList.add(newPost);
                 }
@@ -94,19 +168,19 @@ public class DbManager {
         });
     }
 
-    public void readMyAdsData(final String uid){
+    public void readMyAdsData(final String uid) {
         myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     NewPost newPost = ds.child("anuncio").getValue(NewPost.class);
                     newPostList.add(newPost);
                 }
-                if(cat_ads_counter > 1){
+                if (cat_ads_counter > 1) {
                     dataSender.onDataReceived(newPostList);
                     newPostList.clear();
                     cat_ads_counter = 0;
-                }else{
+                } else {
                     DatabaseReference dbRef = db.getReference(category_ads[cat_ads_counter]);
                     myQuery = dbRef.orderByChild("anuncio/uid").equalTo(uid);
                     readMyAdsData(uid);
@@ -122,21 +196,21 @@ public class DbManager {
         });
     }
 
-    public void readAllAdsData(String uid){
+    public void readAllAdsData(String uid) {
         myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds : snapshot.getChildren()){
+                for (DataSnapshot ds : snapshot.getChildren()) {
                     NewPost newPost = ds.child("anuncio").getValue(NewPost.class);
-                    if(!newPost.getUid().equals(uid)){
+                    if (!newPost.getUid().equals(uid)) {
                         newPostList.add(newPost);
                     }
                 }
-                if(cat_ads_counter > 1){
+                if (cat_ads_counter > 1) {
                     dataSender.onDataReceived(newPostList);
-                    newPostList.clear();
+                    //newPostList.clear();
                     cat_ads_counter = 0;
-                }else{
+                } else {
                     DatabaseReference dbRef = db.getReference(category_ads[cat_ads_counter]);
                     myQuery = dbRef.orderByChild("anuncio/uid");
                     readAllAdsData(uid);
@@ -144,6 +218,7 @@ public class DbManager {
                 }
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -151,7 +226,7 @@ public class DbManager {
         });
     }
 
-    public void deleteItem(final NewPost newPost){
+    public void deleteItem(final NewPost newPost) {
         StorageReference sRef = fs.getReferenceFromUrl(newPost.getImageId());
         sRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -176,4 +251,6 @@ public class DbManager {
             }
         });
     }
+
+
 }

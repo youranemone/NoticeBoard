@@ -103,6 +103,7 @@
         android:background="@drawable/custom_input"
         android:contextClickable="false"
         app:layout_constraintEnd_toEndOf="@+id/edAddress"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edAddress"
         app:layout_constraintTop_toBottomOf="@+id/edAddress" />
 

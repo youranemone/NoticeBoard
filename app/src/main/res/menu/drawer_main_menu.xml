@@ -24,9 +24,9 @@
             <item
                 android:id="@+id/id_my_chat"
                 android:title="@string/my_chat" />
-            <item
-                android:id="@+id/id_my_calendar"
-                android:title="@string/my_calendar" />
+<!--            <item-->
+<!--                android:id="@+id/id_my_calendar"-->
+<!--                android:title="@string/my_calendar" />-->
         </menu>
     </item>
     <item android:id="@+id/accountCat"
