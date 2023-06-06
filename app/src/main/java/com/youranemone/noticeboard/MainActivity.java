@@ -39,6 +39,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.youranemone.noticeboard.adapter.DataSender;
@@ -269,6 +270,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             params.topToBottom = editText.getId();
             btn.setLayoutParams(params);
         }
+        Button forgetBtn = dialogView.findViewById(R.id.buttonForgetP);
+        forgetBtn.setVisibility(View.GONE);
         EditText edEmail = dialogView.findViewById(R.id.edEmail);
         EditText edPassword = dialogView.findViewById(R.id.edPassword);
         EditText edUsername = dialogView.findViewById(R.id.edUsername);
@@ -294,9 +297,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        getUserData();
                         setUserDopParams(email,username,telephone);
                         getFirstAvatar(mAuth.getUid());
+                        getUserData();
                     } else {
                         Log.d("MyLogMainActivity", "createUserWithEmail:failure", task.getException());
                         Toast.makeText(getApplicationContext(), "Authentication failed",
@@ -365,8 +368,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setUserDopParams(String mail, String username, String telephone){
-        dRef = FirebaseDatabase.getInstance().getReference("Доп параметры пользователя");
+        dRef = FirebaseDatabase.getInstance().getReference("Доп параметры пользователя/" +mAuth.getUid());
         mAuth = FirebaseAuth.getInstance();
+        sRef = FirebaseStorage.getInstance().getReference("Images");
         StorageReference imgRef = sRef.child("user-default-ico.jpg");
         imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -380,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     userParams.seteMail(mail);
                     userParams.setuID(mAuth.getUid());
 
-                    dRef.child(mAuth.getUid()).setValue(userParams);
+                    dRef.setValue(userParams);
                 }
             }
         });

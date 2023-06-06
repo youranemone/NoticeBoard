@@ -17,11 +17,13 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/montserrat_bold"
         android:text="TextView"
+        android:layout_marginBottom="3dp"
         android:textColor="@color/text_color"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/tvPrice"
         app:layout_constraintStart_toStartOf="@+id/tvPrice"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf=""/>
 
     <ImageView
         android:id="@+id/imAds"
@@ -43,6 +45,7 @@
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/montserrat"
         android:text="TextView"
+        android:layout_marginTop="@dimen/_3sdp"
         android:textColor="@color/text_color"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvAdress"
